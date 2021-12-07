@@ -1,0 +1,449 @@
+,,,,
+dl-robot,clipper,3,ontology+domain_size_KB,9.3
+dl-robot,clipper,4,ontology+domain_size_KB,12.6
+dl-robot,clipper,5,ontology+domain_size_KB,16.5
+dl-robot,clipper,6,ontology+domain_size_KB,19.7
+dl-robot,clipper,7,ontology+domain_size_KB,22.9
+dl-robot,clipper,8,ontology+domain_size_KB,26.2
+dl-robot,clipper,9,ontology+domain_size_KB,29
+dl-robot,clipper,10,ontology+domain_size_KB,32
+dl-robot,clipper,11,ontology+domain_size_KB,35
+dl-robot,clipper,12,ontology+domain_size_KB,39
+dl-robot,clipper,13,ontology+domain_size_KB,42
+dl-robot,clipper,14,ontology+domain_size_KB,45
+dl-robot,clipper,15,ontology+domain_size_KB,48
+dl-robot,clipper,16,ontology+domain_size_KB,52
+dl-robot,clipper,17,ontology+domain_size_KB,55
+dl-robot,clipper,18,ontology+domain_size_KB,58
+dl-robot,clipper,19,ontology+domain_size_KB,61
+dl-robot,clipper,20,ontology+domain_size_KB,65
+dl-robot,clipper,21,ontology+domain_size_KB,68
+dl-robot,clipper,22,ontology+domain_size_KB,71
+dl-robot,clipper,23,ontology+domain_size_KB,75
+dl-robot,clipper,24,ontology+domain_size_KB,78
+dl-robot,clipper,25,ontology+domain_size_KB,81
+dl-robot,clipper,26,ontology+domain_size_KB,84
+dl-robot,clipper,27,ontology+domain_size_KB,88
+dl-robot,clipper,28,ontology+domain_size_KB,91
+dl-robot,clipper,29,ontology+domain_size_KB,94
+dl-robot,clipper,30,ontology+domain_size_KB,97
+dl-robot,clipper,31,ontology+domain_size_KB,101
+dl-robot,clipper,32,ontology+domain_size_KB,104
+dl-robot,clipper,33,ontology+domain_size_KB,107
+dl-robot,clipper,34,ontology+domain_size_KB,111
+dl-robot,clipper,35,ontology+domain_size_KB,114
+dl-robot,clipper,36,ontology+domain_size_KB,117
+dl-robot,clipper,37,ontology+domain_size_KB,119
+dl-robot,clipper,38,ontology+domain_size_KB,123
+dl-robot,clipper,39,ontology+domain_size_KB,126
+dl-robot,clipper,40,ontology+domain_size_KB,129
+dl-robot,clipper,41,ontology+domain_size_KB,132
+dl-robot,clipper,42,ontology+domain_size_KB,136
+dl-robot,clipper,50,ontology+domain_size_KB,162
+dl-robot,clipper,60,ontology+domain_size_KB,195
+dl-robot,clipper,70,ontology+domain_size_KB,226
+dl-robot,clipper,80,ontology+domain_size_KB,259
+dl-robot,clipper,90,ontology+domain_size_KB,292
+dl-robot,clipper,100,ontology+domain_size_KB,324
+dl-robot,clipper,110,ontology+domain_size_KB,357
+dl-robot,clipper,120,ontology+domain_size_KB,390
+dl-robot,clipper,130,ontology+domain_size_KB,423
+dl-robot,clipper,140,ontology+domain_size_KB,456
+dl-robot,clipper,150,ontology+domain_size_KB,490
+dl-robot,clipper,160,ontology+domain_size_KB,522
+dl-robot,clipper,170,ontology+domain_size_KB,555
+dl-robot,clipper,180,ontology+domain_size_KB,588
+dl-robot,clipper,190,ontology+domain_size_KB,621
+dl-robot,clipper,200,ontology+domain_size_KB,655
+dl-robot,clipper,3,compilation,0.643
+dl-robot,clipper,4,compilation,0.73
+dl-robot,clipper,5,compilation,0.665
+dl-robot,clipper,6,compilation,0.74
+dl-robot,clipper,7,compilation,0.708
+dl-robot,clipper,8,compilation,0.697
+dl-robot,clipper,9,compilation,0.703
+dl-robot,clipper,10,compilation,0.709
+dl-robot,clipper,11,compilation,0.786
+dl-robot,clipper,12,compilation,0.842
+dl-robot,clipper,13,compilation,0.882
+dl-robot,clipper,14,compilation,0.891
+dl-robot,clipper,15,compilation,0.888
+dl-robot,clipper,16,compilation,0.885
+dl-robot,clipper,17,compilation,0.932
+dl-robot,clipper,18,compilation,0.932
+dl-robot,clipper,19,compilation,0.905
+dl-robot,clipper,20,compilation,1.022
+dl-robot,clipper,21,compilation,1.033
+dl-robot,clipper,22,compilation,1.06
+dl-robot,clipper,23,compilation,0.989
+dl-robot,clipper,24,compilation,1.148
+dl-robot,clipper,25,compilation,1.218
+dl-robot,clipper,26,compilation,1.226
+dl-robot,clipper,27,compilation,1.264
+dl-robot,clipper,28,compilation,1.273
+dl-robot,clipper,29,compilation,1.193
+dl-robot,clipper,30,compilation,1.341
+dl-robot,clipper,31,compilation,1.366
+dl-robot,clipper,32,compilation,1.237
+dl-robot,clipper,33,compilation,1.307
+dl-robot,clipper,34,compilation,1.337
+dl-robot,clipper,35,compilation,1.572
+dl-robot,clipper,36,compilation,1.397
+dl-robot,clipper,37,compilation,1.457
+dl-robot,clipper,38,compilation,1.449
+dl-robot,clipper,39,compilation,1.462
+dl-robot,clipper,40,compilation,1.581
+dl-robot,clipper,41,compilation,1.662
+dl-robot,clipper,42,compilation,1.636
+dl-robot,clipper,50,compilation,2.022
+dl-robot,clipper,60,compilation,2.773
+dl-robot,clipper,70,compilation,3.742
+dl-robot,clipper,80,compilation,4.235
+dl-robot,clipper,90,compilation,5.081
+dl-robot,clipper,100,compilation,5.867
+dl-robot,clipper,110,compilation,6.86
+dl-robot,clipper,120,compilation,8.235
+dl-robot,clipper,130,compilation,9.489
+dl-robot,clipper,140,compilation,11.924
+dl-robot,clipper,150,compilation,14.168
+dl-robot,clipper,160,compilation,15.984
+dl-robot,clipper,170,compilation,16.957
+dl-robot,clipper,180,compilation,19.525
+dl-robot,clipper,190,compilation,21.331
+dl-robot,clipper,200,compilation,23.584
+dl-robot,clipper,3,preprocessing ,0.04
+dl-robot,clipper,4,preprocessing ,0.073
+dl-robot,clipper,5,preprocessing ,0.118
+dl-robot,clipper,6,preprocessing ,0.18
+dl-robot,clipper,7,preprocessing ,0.205
+dl-robot,clipper,8,preprocessing ,0.344
+dl-robot,clipper,9,preprocessing ,0.457
+dl-robot,clipper,10,preprocessing ,0.477
+dl-robot,clipper,11,preprocessing ,0.736
+dl-robot,clipper,12,preprocessing ,0.917
+dl-robot,clipper,13,preprocessing ,1.111
+dl-robot,clipper,14,preprocessing ,1.356
+dl-robot,clipper,15,preprocessing ,1.269
+dl-robot,clipper,16,preprocessing ,1.885
+dl-robot,clipper,17,preprocessing ,1.137
+dl-robot,clipper,18,preprocessing ,2.004
+dl-robot,clipper,19,preprocessing ,2.326
+dl-robot,clipper,20,preprocessing ,2.138
+dl-robot,clipper,21,preprocessing ,3.273
+dl-robot,clipper,22,preprocessing ,3.335
+dl-robot,clipper,23,preprocessing ,2.433
+dl-robot,clipper,24,preprocessing ,3.71
+dl-robot,clipper,25,preprocessing ,4.719
+dl-robot,clipper,26,preprocessing ,4.296
+dl-robot,clipper,27,preprocessing ,6.302
+dl-robot,clipper,28,preprocessing ,6.49
+dl-robot,clipper,29,preprocessing ,4.563
+dl-robot,clipper,30,preprocessing ,8.524
+dl-robot,clipper,31,preprocessing ,8.417
+dl-robot,clipper,32,preprocessing ,5.096
+dl-robot,clipper,33,preprocessing ,10.474
+dl-robot,clipper,34,preprocessing ,10.779
+dl-robot,clipper,35,preprocessing ,11.42
+dl-robot,clipper,36,preprocessing ,12.461
+dl-robot,clipper,37,preprocessing ,12.932
+dl-robot,clipper,38,preprocessing ,7.579
+dl-robot,clipper,39,preprocessing ,13.432
+dl-robot,clipper,40,preprocessing ,13.675
+dl-robot,clipper,41,preprocessing ,13.736
+dl-robot,clipper,42,preprocessing ,14.506
+dl-robot,clipper,50,preprocessing ,17.42
+dl-robot,clipper,60,preprocessing ,20.082
+dl-robot,clipper,70,preprocessing ,22.356
+dl-robot,clipper,80,preprocessing ,25.871
+dl-robot,clipper,90,preprocessing ,27.488
+dl-robot,clipper,100,preprocessing ,31.223
+dl-robot,clipper,110,preprocessing ,32.517
+dl-robot,clipper,120,preprocessing ,34.441
+dl-robot,clipper,130,preprocessing ,36.849
+dl-robot,clipper,140,preprocessing ,41.122
+dl-robot,clipper,150,preprocessing ,43.516
+dl-robot,clipper,160,preprocessing ,46.153
+dl-robot,clipper,170,preprocessing ,51.08
+dl-robot,clipper,180,preprocessing ,55.034
+dl-robot,clipper,190,preprocessing ,56.906
+dl-robot,clipper,200,preprocessing ,60.616
+dl-robot,clipper,3,solving,0.0024843
+dl-robot,clipper,4,solving,0.00285215
+dl-robot,clipper,5,solving,0.00326624
+dl-robot,clipper,6,solving,0.00323137
+dl-robot,clipper,7,solving,0.00331205
+dl-robot,clipper,8,solving,0.00371291
+dl-robot,clipper,9,solving,0.00388564
+dl-robot,clipper,10,solving,0.00410267
+dl-robot,clipper,11,solving,0.00450914
+dl-robot,clipper,12,solving,0.00476929
+dl-robot,clipper,13,solving,0.00510832
+dl-robot,clipper,14,solving,0.00578773
+dl-robot,clipper,15,solving,0.00631053
+dl-robot,clipper,16,solving,0.00646462
+dl-robot,clipper,17,solving,0.00702812
+dl-robot,clipper,18,solving,0.00757633
+dl-robot,clipper,19,solving,0.00843954
+dl-robot,clipper,20,solving,0.00917231
+dl-robot,clipper,21,solving,0.0108745
+dl-robot,clipper,22,solving,0.0109594
+dl-robot,clipper,23,solving,0.0113925
+dl-robot,clipper,24,solving,0.0124876
+dl-robot,clipper,25,solving,0.0138512
+dl-robot,clipper,26,solving,0.0153315
+dl-robot,clipper,27,solving,0.0157949
+dl-robot,clipper,28,solving,0.0175186
+dl-robot,clipper,29,solving,0.0190557
+dl-robot,clipper,30,solving,0.0206712
+dl-robot,clipper,31,solving,0.0234699
+dl-robot,clipper,32,solving,0.0237766
+dl-robot,clipper,33,solving,0.0296899
+dl-robot,clipper,34,solving,0.0273605
+dl-robot,clipper,35,solving,0.0306665
+dl-robot,clipper,36,solving,0.0316824
+dl-robot,clipper,37,solving,0.0364324
+dl-robot,clipper,38,solving,0.0375269
+dl-robot,clipper,39,solving,0.0388841
+dl-robot,clipper,40,solving,0.0430816
+dl-robot,clipper,41,solving,0.0459513
+dl-robot,clipper,42,solving,0.0589365
+dl-robot,clipper,50,solving,0.0777054
+dl-robot,clipper,60,solving,0.125272
+dl-robot,clipper,70,solving,0.198487
+dl-robot,clipper,80,solving,0.28419
+dl-robot,clipper,90,solving,0.430192
+dl-robot,clipper,100,solving,0.550147
+dl-robot,clipper,110,solving,0.741298
+dl-robot,clipper,120,solving,0.973015
+dl-robot,clipper,130,solving,1.23969
+dl-robot,clipper,140,solving,1.52747
+dl-robot,clipper,150,solving,1.87467
+dl-robot,clipper,160,solving,2.28591
+dl-robot,clipper,170,solving,2.7557
+dl-robot,clipper,180,solving,3.23825
+dl-robot,clipper,190,solving,3.81464
+dl-robot,clipper,200,solving,4.52865
+dl-robotConj,clipper,3,ontology+domain_size_KB,9.9
+dl-robotConj,clipper,4,ontology+domain_size_KB,12.5
+dl-robotConj,clipper,5,ontology+domain_size_KB,15.1
+dl-robotConj,clipper,6,ontology+domain_size_KB,18.7
+dl-robotConj,clipper,7,ontology+domain_size_KB,21.4
+dl-robotConj,clipper,8,ontology+domain_size_KB,24
+dl-robotConj,clipper,9,ontology+domain_size_KB,26.6
+dl-robotConj,clipper,10,ontology+domain_size_KB,30.3
+dl-robotConj,clipper,11,ontology+domain_size_KB,32.9
+dl-robotConj,clipper,12,ontology+domain_size_KB,35.6
+dl-robotConj,clipper,13,ontology+domain_size_KB,39.2
+dl-robotConj,clipper,14,ontology+domain_size_KB,41.9
+dl-robotConj,clipper,15,ontology+domain_size_KB,44.6
+dl-robotConj,clipper,16,ontology+domain_size_KB,48
+dl-robotConj,clipper,17,ontology+domain_size_KB,51
+dl-robotConj,clipper,18,ontology+domain_size_KB,54
+dl-robotConj,clipper,19,ontology+domain_size_KB,57
+dl-robotConj,clipper,20,ontology+domain_size_KB,60
+dl-robotConj,clipper,21,ontology+domain_size_KB,63
+dl-robotConj,clipper,22,ontology+domain_size_KB,66
+dl-robotConj,clipper,23,ontology+domain_size_KB,69
+dl-robotConj,clipper,24,ontology+domain_size_KB,72
+dl-robotConj,clipper,25,ontology+domain_size_KB,75
+dl-robotConj,clipper,26,ontology+domain_size_KB,77
+dl-robotConj,clipper,27,ontology+domain_size_KB,81
+dl-robotConj,clipper,28,ontology+domain_size_KB,84
+dl-robotConj,clipper,29,ontology+domain_size_KB,86
+dl-robotConj,clipper,30,ontology+domain_size_KB,90
+dl-robotConj,clipper,31,ontology+domain_size_KB,93
+dl-robotConj,clipper,32,ontology+domain_size_KB,95
+dl-robotConj,clipper,33,ontology+domain_size_KB,99
+dl-robotConj,clipper,34,ontology+domain_size_KB,102
+dl-robotConj,clipper,35,ontology+domain_size_KB,104
+dl-robotConj,clipper,36,ontology+domain_size_KB,107
+dl-robotConj,clipper,37,ontology+domain_size_KB,110
+dl-robotConj,clipper,38,ontology+domain_size_KB,113
+dl-robotConj,clipper,39,ontology+domain_size_KB,116
+dl-robotConj,clipper,40,ontology+domain_size_KB,119
+dl-robotConj,clipper,41,ontology+domain_size_KB,122
+dl-robotConj,clipper,42,ontology+domain_size_KB,125
+dl-robotConj,clipper,50,ontology+domain_size_KB,149
+dl-robotConj,clipper,60,ontology+domain_size_KB,179
+dl-robotConj,clipper,70,ontology+domain_size_KB,208
+dl-robotConj,clipper,80,ontology+domain_size_KB,237
+dl-robotConj,clipper,90,ontology+domain_size_KB,266
+dl-robotConj,clipper,100,ontology+domain_size_KB,296
+dl-robotConj,clipper,110,ontology+domain_size_KB,327
+dl-robotConj,clipper,120,ontology+domain_size_KB,357
+dl-robotConj,clipper,130,ontology+domain_size_KB,386
+dl-robotConj,clipper,140,ontology+domain_size_KB,416
+dl-robotConj,clipper,150,ontology+domain_size_KB,446
+dl-robotConj,clipper,160,ontology+domain_size_KB,477
+dl-robotConj,clipper,170,ontology+domain_size_KB,507
+dl-robotConj,clipper,180,ontology+domain_size_KB,536
+dl-robotConj,clipper,190,ontology+domain_size_KB,566
+dl-robotConj,clipper,200,ontology+domain_size_KB,596
+dl-robotConj,clipper,3,compilation,0.579
+dl-robotConj,clipper,4,compilation,0.764
+dl-robotConj,clipper,5,compilation,0.616
+dl-robotConj,clipper,6,compilation,0.614
+dl-robotConj,clipper,7,compilation,0.631
+dl-robotConj,clipper,8,compilation,0.635
+dl-robotConj,clipper,9,compilation,0.711
+dl-robotConj,clipper,10,compilation,0.732
+dl-robotConj,clipper,11,compilation,0.672
+dl-robotConj,clipper,12,compilation,0.779
+dl-robotConj,clipper,13,compilation,0.786
+dl-robotConj,clipper,14,compilation,0.83
+dl-robotConj,clipper,15,compilation,0.813
+dl-robotConj,clipper,16,compilation,0.732
+dl-robotConj,clipper,17,compilation,0.777
+dl-robotConj,clipper,18,compilation,0.86
+dl-robotConj,clipper,19,compilation,0.9
+dl-robotConj,clipper,20,compilation,0.796
+dl-robotConj,clipper,21,compilation,0.813
+dl-robotConj,clipper,22,compilation,0.832
+dl-robotConj,clipper,23,compilation,0.853
+dl-robotConj,clipper,24,compilation,0.892
+dl-robotConj,clipper,25,compilation,0.931
+dl-robotConj,clipper,26,compilation,0.873
+dl-robotConj,clipper,27,compilation,0.913
+dl-robotConj,clipper,28,compilation,1.063
+dl-robotConj,clipper,29,compilation,0.984
+dl-robotConj,clipper,30,compilation,1.164
+dl-robotConj,clipper,31,compilation,1.031
+dl-robotConj,clipper,32,compilation,1.047
+dl-robotConj,clipper,33,compilation,1.16
+dl-robotConj,clipper,34,compilation,1.126
+dl-robotConj,clipper,35,compilation,1.253
+dl-robotConj,clipper,36,compilation,1.267
+dl-robotConj,clipper,37,compilation,1.222
+dl-robotConj,clipper,38,compilation,1.185
+dl-robotConj,clipper,39,compilation,1.323
+dl-robotConj,clipper,40,compilation,1.32
+dl-robotConj,clipper,41,compilation,1.306
+dl-robotConj,clipper,42,compilation,1.293
+dl-robotConj,clipper,50,compilation,1.566
+dl-robotConj,clipper,60,compilation,1.974
+dl-robotConj,clipper,70,compilation,2.535
+dl-robotConj,clipper,80,compilation,3.025
+dl-robotConj,clipper,90,compilation,3.772
+dl-robotConj,clipper,100,compilation,4.331
+dl-robotConj,clipper,110,compilation,5.206
+dl-robotConj,clipper,120,compilation,5.984
+dl-robotConj,clipper,130,compilation,6.83
+dl-robotConj,clipper,140,compilation,8.044
+dl-robotConj,clipper,150,compilation,9.187
+dl-robotConj,clipper,160,compilation,10.736
+dl-robotConj,clipper,170,compilation,12.009
+dl-robotConj,clipper,180,compilation,12.87
+dl-robotConj,clipper,190,compilation,14.438
+dl-robotConj,clipper,200,compilation,15.605
+dl-robotConj,clipper,3,preprocessing ,0.015
+dl-robotConj,clipper,4,preprocessing ,0.021
+dl-robotConj,clipper,5,preprocessing ,0.032
+dl-robotConj,clipper,6,preprocessing ,0.042
+dl-robotConj,clipper,7,preprocessing ,0.054
+dl-robotConj,clipper,8,preprocessing ,0.068
+dl-robotConj,clipper,9,preprocessing ,0.083
+dl-robotConj,clipper,10,preprocessing ,0.103
+dl-robotConj,clipper,11,preprocessing ,0.124
+dl-robotConj,clipper,12,preprocessing ,0.145
+dl-robotConj,clipper,13,preprocessing ,0.17
+dl-robotConj,clipper,14,preprocessing ,0.146
+dl-robotConj,clipper,15,preprocessing ,0.225
+dl-robotConj,clipper,16,preprocessing ,0.262
+dl-robotConj,clipper,17,preprocessing ,0.211
+dl-robotConj,clipper,18,preprocessing ,0.251
+dl-robotConj,clipper,19,preprocessing ,0.396
+dl-robotConj,clipper,20,preprocessing ,0.298
+dl-robotConj,clipper,21,preprocessing ,0.457
+dl-robotConj,clipper,22,preprocessing ,0.455
+dl-robotConj,clipper,23,preprocessing ,0.406
+dl-robotConj,clipper,24,preprocessing ,0.642
+dl-robotConj,clipper,25,preprocessing ,0.71
+dl-robotConj,clipper,26,preprocessing ,0.525
+dl-robotConj,clipper,27,preprocessing ,0.866
+dl-robotConj,clipper,28,preprocessing ,0.937
+dl-robotConj,clipper,29,preprocessing ,1.013
+dl-robotConj,clipper,30,preprocessing ,1.07
+dl-robotConj,clipper,31,preprocessing ,1.231
+dl-robotConj,clipper,32,preprocessing ,1.319
+dl-robotConj,clipper,33,preprocessing ,1.088
+dl-robotConj,clipper,34,preprocessing ,1.29
+dl-robotConj,clipper,35,preprocessing ,1.037
+dl-robotConj,clipper,36,preprocessing ,1.612
+dl-robotConj,clipper,37,preprocessing ,1.682
+dl-robotConj,clipper,38,preprocessing ,1.825
+dl-robotConj,clipper,39,preprocessing ,1.357
+dl-robotConj,clipper,40,preprocessing ,0.827
+dl-robotConj,clipper,41,preprocessing ,2.247
+dl-robotConj,clipper,42,preprocessing ,1.789
+dl-robotConj,clipper,50,preprocessing ,3.402
+dl-robotConj,clipper,60,preprocessing ,4.158
+dl-robotConj,clipper,70,preprocessing ,6.882
+dl-robotConj,clipper,80,preprocessing ,12.007
+dl-robotConj,clipper,90,preprocessing ,14.825
+dl-robotConj,clipper,100,preprocessing ,16.15
+dl-robotConj,clipper,110,preprocessing ,17.318
+dl-robotConj,clipper,120,preprocessing ,18.894
+dl-robotConj,clipper,130,preprocessing ,20.019
+dl-robotConj,clipper,140,preprocessing ,21.738
+dl-robotConj,clipper,150,preprocessing ,22.766
+dl-robotConj,clipper,160,preprocessing ,25.015
+dl-robotConj,clipper,170,preprocessing ,25.996
+dl-robotConj,clipper,180,preprocessing ,27.966
+dl-robotConj,clipper,190,preprocessing ,28.473
+dl-robotConj,clipper,200,preprocessing ,29.541
+dl-robotConj,clipper,3,solving,0.00304317
+dl-robotConj,clipper,4,solving,0.00342387
+dl-robotConj,clipper,5,solving,0.00369834
+dl-robotConj,clipper,6,solving,0.0041338
+dl-robotConj,clipper,7,solving,0.0044591
+dl-robotConj,clipper,8,solving,0.00527922
+dl-robotConj,clipper,9,solving,0.00605641
+dl-robotConj,clipper,10,solving,0.00703243
+dl-robotConj,clipper,11,solving,0.00846246
+dl-robotConj,clipper,12,solving,0.0101215
+dl-robotConj,clipper,13,solving,0.0117956
+dl-robotConj,clipper,14,solving,0.0137249
+dl-robotConj,clipper,15,solving,0.0161591
+dl-robotConj,clipper,16,solving,0.021085
+dl-robotConj,clipper,17,solving,0.0231132
+dl-robotConj,clipper,18,solving,0.0268813
+dl-robotConj,clipper,19,solving,0.0289714
+dl-robotConj,clipper,20,solving,0.0332822
+dl-robotConj,clipper,21,solving,0.0397562
+dl-robotConj,clipper,22,solving,0.0445443
+dl-robotConj,clipper,23,solving,0.0477317
+dl-robotConj,clipper,24,solving,0.054654
+dl-robotConj,clipper,25,solving,0.0625373
+dl-robotConj,clipper,26,solving,0.0704572
+dl-robotConj,clipper,27,solving,0.0792429
+dl-robotConj,clipper,28,solving,0.0923222
+dl-robotConj,clipper,29,solving,0.0988194
+dl-robotConj,clipper,30,solving,0.10164
+dl-robotConj,clipper,31,solving,0.116985
+dl-robotConj,clipper,32,solving,0.125119
+dl-robotConj,clipper,33,solving,0.133848
+dl-robotConj,clipper,34,solving,0.143403
+dl-robotConj,clipper,35,solving,0.158373
+dl-robotConj,clipper,36,solving,0.171464
+dl-robotConj,clipper,37,solving,0.184618
+dl-robotConj,clipper,38,solving,0.202071
+dl-robotConj,clipper,39,solving,0.218117
+dl-robotConj,clipper,40,solving,0.238298
+dl-robotConj,clipper,41,solving,0.251299
+dl-robotConj,clipper,42,solving,0.2628
+dl-robotConj,clipper,50,solving,0.442416
+dl-robotConj,clipper,60,solving,0.71831
+dl-robotConj,clipper,70,solving,1.12783
+dl-robotConj,clipper,80,solving,1.62537
+dl-robotConj,clipper,90,solving,2.30337
+dl-robotConj,clipper,100,solving,3.08913
+dl-robotConj,clipper,110,solving,4.17961
+dl-robotConj,clipper,120,solving,5.30515
+dl-robotConj,clipper,130,solving,6.71862
+dl-robotConj,clipper,140,solving,8.22313
+dl-robotConj,clipper,150,solving,10.2897
+dl-robotConj,clipper,160,solving,12.1272
+dl-robotConj,clipper,170,solving,14.3805
+dl-robotConj,clipper,180,solving,16.9748
+dl-robotConj,clipper,190,solving,19.8572
+dl-robotConj,clipper,200,solving,22.8909
