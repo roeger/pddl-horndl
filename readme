@@ -1,5 +1,7 @@
 This folder contains supplementary material for an AAAI submission "Expressivity of Planning with Horn Description Logic Ontologies": 
 
+    * an appendix with the proofs omitted from the main text 
+
     * a set of problem instances, 
     
     * a code of a compiler that uses Clipper as a reasoner to deal with ontologies. Clipper is available online on https://github.com/ghxiao/clipper
