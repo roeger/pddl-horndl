@@ -97,7 +97,8 @@ class Compilation:
                  clipper,
                  filter_duplicates = True,
                  filter_unimportant_atoms = True,
-                 expensive_duplicate_filtering = False):
+                 expensive_duplicate_filtering = False,
+                 update_rules_path=""):
         self.domain = domain
         self.problem = problem
         self.clipper = clipper
@@ -119,6 +120,7 @@ class Compilation:
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
+                breakpoint()
                 self._compile_datalog_rules()
             with Timer("Finalizing PDDL"):
                 self._unprime_conditions_and_enforce_consistency()
@@ -225,6 +227,7 @@ class Compilation:
                 self.problem.initial_state[i] = apply_to_fact(p)
 
     def _create_datalog_rule_objects(self):
+        # TODO(dnh): Rules in here
         datalog_rules = self._datalog_rules
         self._datalog_rules = set() if self.filter_duplicates else list()
         self._duplicate_rules = set()
