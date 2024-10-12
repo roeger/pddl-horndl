@@ -29,7 +29,7 @@ def get_query_id(name):
     if name.lower().startswith(QUERY_PREDICATE_NAME.lower()):
         return int(name[len(QUERY_PREDICATE_NAME):])
     return None
-    
+
 def get_parameter_list(length, var_name="?x%d"):
     if length == 0:
         return []
@@ -98,7 +98,7 @@ class Compilation:
                  filter_duplicates = True,
                  filter_unimportant_atoms = True,
                  expensive_duplicate_filtering = False,
-                 update_rules_path=""):
+                 update_runner = None):
         self.domain = domain
         self.problem = problem
         self.clipper = clipper
@@ -106,6 +106,7 @@ class Compilation:
         self.filter_unimportant_atoms = filter_unimportant_atoms
         self.filter_duplicates = filter_duplicates
         self.expensive_duplicate_filtering = expensive_duplicate_filtering
+        self.update_runner = update_runner
 
     def __call__(self):
         with Timer("Compilation", block=True):
@@ -114,13 +115,15 @@ class Compilation:
             with Timer("Rewriting"):
                 self._prepare_queries_for_rewriting()
                 self._rewrite_ontology_and_ucqs()
+            if self.update_runner:
+                with Timer("Adding update rules"):
+                    self._add_update_rules()
             with Timer("Generating derived predicated from datalog rules"):
                 self._adapt_predicate_names_to_clipper()
                 self._collect_predicate_information()
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
-                breakpoint()
                 self._compile_datalog_rules()
             with Timer("Finalizing PDDL"):
                 self._unprime_conditions_and_enforce_consistency()
@@ -209,6 +212,10 @@ class Compilation:
                     rules = self.clipper.rewrite_cq(q)
                     self._datalog_rules.extend(rules)
 
+    def _add_update_rules(self):
+        update_rules = self.update_runner()
+        self._datalog_rules.extend(update_rules)
+
     def _adapt_predicate_names_to_clipper(self):
         for p in self.domain.predicates:
             p.name = self.clipper.adapt_predicate_name(p.name)
@@ -218,7 +225,7 @@ class Compilation:
             return pddl.Fact(self.clipper.adapt_predicate_name(fact.predicate), fact.parameters)
         def apply_to_effect(eff):
             return eff.__class__(apply_to_fact(eff.fact))
-        self._apply_to_all_conditions(pddl.Fact, apply_to_fact)        
+        self._apply_to_all_conditions(pddl.Fact, apply_to_fact)
         self._apply_to_all_effects(pddl.AddEffect, apply_to_effect)
         self._apply_to_all_effects(pddl.DelEffect, apply_to_effect)
         for i in range(len(self.problem.initial_state)):
@@ -227,7 +234,6 @@ class Compilation:
                 self.problem.initial_state[i] = apply_to_fact(p)
 
     def _create_datalog_rule_objects(self):
-        # TODO(dnh): Rules in here
         datalog_rules = self._datalog_rules
         self._datalog_rules = set() if self.filter_duplicates else list()
         self._duplicate_rules = set()
@@ -312,7 +318,7 @@ class Compilation:
                         predicate,
                         pddl.Fact(rule.head.name, [subst[x] for x in rule.head.parameters])))
             self.predicates_in_ontology.add(rule.head.name)
-                    
+
             cond = []
             for t in rule.tail:
                 neg = False
@@ -321,7 +327,7 @@ class Compilation:
                     t = t.element
                 if isinstance(t, datalog.Atom):
                     cond.append(pddl.Fact(
-                        prime_predicate_name(t.name), 
+                        prime_predicate_name(t.name),
                         [ subst[x] for x in t.parameters ]))
                     self.predicates_in_ontology.add(t.name)
                 else:
