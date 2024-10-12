@@ -183,7 +183,3 @@ eRMinusInNotePMinusSub(?ExistsRMinus, ?NotExistsPMinus, ?R, ?P) :- sub(?ExistsRM
 eRInNotaASub(?ExistsR, ?NotA, ?R, ?A) :- sub(?ExistsR, ?NotA), domOf(?ExistsR, ?R), atomic(?R), negOf(?NotA, ?A), atomic(?A) .
 % rngR in not atomic A (type 14)
 eRMinusInNotaASub(?ExistsRMinus, ?NotA, ?R, ?A) :- sub(?ExistsRMinus, ?NotA), rngOf(?ExistsRMinus, ?RMinus), invOf(?RMinus, ?R), atomic(?R), negOf(?NotA, ?A), atomic(?A) .
-
-
-% export to standard output
-% @export sub :- turtle{resource=""} .

@@ -1,4 +1,6 @@
 *.cq
+*__temp*
 *.pyc
 # ignore pycache
 __pycache__/
+tmp/

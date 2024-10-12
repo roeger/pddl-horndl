@@ -3,6 +3,8 @@ prefix="benchmarks/$domain"
 
 # path to a (patched) clipper
 clipper="/home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
+nmo="/home/zinzin2312/repos/nemo/target/release/nmo"
+rls="code/nemo/t_closure.rls"
 
 # path to compiler.py
 compiler="code/compiler.py"
@@ -21,9 +23,9 @@ do
   tseitin_problem="benchmarks/outputs/$domain/compiled_problem${i}.pddl"
 
   # run compilation
-  python3 "$compiler" "$owl" "$input_domain" "$input_problem" --clipper "$clipper" --clipper-mqf --debug -v $@
+  # python3 "$compiler" "$owl" "$input_domain" "$input_problem" --clipper "$clipper" --clipper-mqf --debug -v $@
 
-  # python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf --debug -v $@
+  python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --debug -v $@
 
   # python3 pddl-horndl/code/tseitin.py pddl-horndl/benchmarks/cats/original/TTL.owl pddl-horndl/benchmarks/cats/original/domain.pddl /pddl-horndl/benchmarks/cat/soriginal/catProblem6.pddl -d --clipper /home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh --clipper-mqf --debug -v
 
@@ -31,5 +33,5 @@ do
   # python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" -v $@
 done
 
-# rm -rf __temp_clipper_*
+rm -rf __temp_clipper_*
 

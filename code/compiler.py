@@ -8,6 +8,7 @@ import shutil
 import time
 
 from clipper import Clipper
+from update_runner import UpdateRunner
 
 QUERY_PREDICATE_NAME = "QUERY"
 
@@ -415,6 +416,10 @@ if __name__ == "__main__":
     p.add_argument("ontology")
     p.add_argument("domain")
     p.add_argument("problem")
+
+    p.add_argument("--rls", default="t_closure.rls")
+    p.add_argument("--nmo", default="nmo")
+
     p.add_argument("--clipper-mqf", default=False, action="store_true", help="Use multiple-query feature of clipper.")
     p.add_argument("--clipper", default="clipper.sh")
     p.add_argument("--out-domain", "-d", default="domain.pddl")
@@ -433,7 +438,10 @@ if __name__ == "__main__":
         d = pddl.parse_domain(f.read())
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
-    compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering)
+
+    update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls) if args.rls and args.nmo else None
+
+    compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering, update_runner=update_runner)
     compilation()
     d.constants = p.objects
     p.objects = None
