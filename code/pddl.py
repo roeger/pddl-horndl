@@ -27,6 +27,16 @@ SUPPORTED_FEATURES = [
     ":preferences",
 ]
 
+COHERENCE_UPDATE_TOKENS = {
+    "updating": "(updating)",
+}
+
+COHERENCE_UPDATE_PREDICATE_EXTENSIONS = {
+    "ins": "ins_",
+    "del": "del_",
+    "request": "_request"
+}
+
 class Substitution:
     def __init__(self):
         self.substitutions = {}
@@ -313,6 +323,7 @@ class Fact(LogicBaseClass):
     def instantiate(self, object_assignment):
         instantiated = [ object_assignment.get(v, v) if v.startswith('?') else v for v in self.parameters ]
         return Fact(self.predicate, instantiated)
+
 
 class Or(LogicBaseClass):
     def __init__(self, elements):
@@ -1046,9 +1057,6 @@ class TokenList:
             t = tp
         self.tokens = list(reversed(t))
 
-    def insert(self, token):
-        self.tokens.insert(0, token)
-
     def pop(self, i = 0):
         if i < 0 or len(self.tokens) - i <= 0:
             raise IndexError()
@@ -1448,9 +1456,8 @@ def parse_c_effect(tokens):
 def parse_effect(tokens):
     return parse_c_effect(tokens)
 
-import copy
 
-def parse_domain(content):
+def parse_domain(content, do_coherence_update=False):
     result = Domain()
     result.actions = []
     result.derived_predicates = []
@@ -1477,7 +1484,12 @@ def parse_domain(content):
         elif t == ':constants':
             result.constants = parse_typed_list(tokens)
         elif t == ':predicates':
-            result.predicates = []
+            if do_coherence_update:
+                new_tok = TokenList(COHERENCE_UPDATE_TOKENS["updating"])
+                pred = Predicate(new_tok.next(), parse_typed_list(new_tok))
+                result.predicates = [pred]
+            else:
+                result.predicates = []
             while True:
                 result.predicates.append(Predicate(tokens.next(), parse_typed_list(tokens)))
                 assert not tokens.empty()
@@ -1505,18 +1517,19 @@ def parse_domain(content):
                     action.parameters = parse_typed_list(tokens)
                     # print(" ".join([str(x) for x in action.parameters]))
                 elif t == ':precondition':
-                    breakpoint()
-                    # TODO(dnh): New precondition here ???
-                    # new_token_list = copy.deepcopy(tokens)
-                    # new_token_list.insert('(')
-                    # new_token_list.insert('and')
-                    # new_token_list.insert('updating')
-                    # elements = [updating, simplify(parse_preference_condition(tokens, parse_condition))]
-                    # new_precondition = And(elements)
-                    action.precondition = simplify(parse_preference_condition(tokens, parse_condition))
+                    if do_coherence_update:
+                        new_tok = TokenList(COHERENCE_UPDATE_TOKENS["updating"])
+                        element = Not(parse_condition(new_tok))
+                        elements = [element, parse_preference_condition(tokens, parse_condition)]
+                        pre = simplify(And(elements))
+                    else:
+                        pre = simplify(parse_preference_condition(tokens, parse_condition))
+                    action.precondition = pre
                     # print(repr(action.precondition))
                 elif t == ':effect':
-                    action.effect = parse_effect(tokens)
+                    eff = parse_effect(tokens)
+                    breakpoint()
+                    action.effect = eff
                     # print(repr(action.effect))
                 else:
                     assert False, t

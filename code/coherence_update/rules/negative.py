@@ -1,6 +1,5 @@
 # Negation inclusion rules (Sec 2.4)
 
-# TODO(dnh):  Last 2 closure rules
 
 def atomicB_in_not_atomicA(b_repr, a_repr):
     """

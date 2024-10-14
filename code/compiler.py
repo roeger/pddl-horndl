@@ -422,12 +422,9 @@ if __name__ == "__main__":
     update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology) if do_coherence_update else None
 
     with open(args.domain) as f:
-        d = pddl.parse_domain(f.read())
+        d = pddl.parse_domain(f.read(), do_coherence_update=do_coherence_update)
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
-
-    if do_coherence_update:
-        d.extend_with_coherence_update(update_runner)
 
     compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering, update_runner=update_runner)
     compilation()
