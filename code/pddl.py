@@ -124,6 +124,7 @@ class Domain:
                     constants[super_type].extend(tl.elements)
         return constants
 
+
 class Problem:
     def __init__(self):
         self.name = None
@@ -875,7 +876,7 @@ class Action:
         assert isinstance(state, set)
         adds, dels = self.effect.get_effects(objects, state)
         return (state - dels) | adds
- 
+
 class ConjunctiveEffect(TraversableBaseClass):
     def __init__(self, fs):
         self.elements = fs
@@ -1044,6 +1045,9 @@ class TokenList:
                     tp.append(splt[-1].strip())
             t = tp
         self.tokens = list(reversed(t))
+
+    def insert(self, token):
+        self.tokens.insert(0, token)
 
     def pop(self, i = 0):
         if i < 0 or len(self.tokens) - i <= 0:
@@ -1444,6 +1448,7 @@ def parse_c_effect(tokens):
 def parse_effect(tokens):
     return parse_c_effect(tokens)
 
+import copy
 
 def parse_domain(content):
     result = Domain()
@@ -1485,22 +1490,29 @@ def parse_domain(content):
             # print("\n".join([repr(x) for x in result.functions]))
         elif t == ":derived":
             p = Predicate(tokens.next(), parse_typed_list(tokens))
-            c = simplify(parse_condition(tokens))
+            cond = simplify(parse_condition(tokens))
             assert tokens.get() == ')'
             tokens.pop()
-            result.derived_predicates.append(DerivedPredicate(p, c))
+            result.derived_predicates.append(DerivedPredicate(p, cond))
         elif t == ':action':
             action = Action(tokens.pop())
             # print(action.name)
             t = tokens.pop()
             while t != ')':
-                # print(t, end="\t")
                 if t == ':parameters':
                     t = tokens.pop()
                     assert t == '('
                     action.parameters = parse_typed_list(tokens)
                     # print(" ".join([str(x) for x in action.parameters]))
                 elif t == ':precondition':
+                    breakpoint()
+                    # TODO(dnh): New precondition here ???
+                    # new_token_list = copy.deepcopy(tokens)
+                    # new_token_list.insert('(')
+                    # new_token_list.insert('and')
+                    # new_token_list.insert('updating')
+                    # elements = [updating, simplify(parse_preference_condition(tokens, parse_condition))]
+                    # new_precondition = And(elements)
                     action.precondition = simplify(parse_preference_condition(tokens, parse_condition))
                     # print(repr(action.precondition))
                 elif t == ':effect':
@@ -1514,7 +1526,7 @@ def parse_domain(content):
             assert False, "Unexpected keyword '%s'" % t
     assert tokens.empty()
     return result
-            
+
 
 def parse_problem(content):
     tokens = TokenList(content)
@@ -1574,7 +1586,7 @@ def parse_problem(content):
             assert metric in Metric.METRICS
             assert tokens.get() == ')'
             tokens.pop()
-            result.metric = Metric(metric, expression) 
+            result.metric = Metric(metric, expression)
         else:
             assert False, 'unexpected keyword "%s"' % t
     assert tokens.empty()

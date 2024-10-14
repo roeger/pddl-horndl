@@ -44,7 +44,7 @@ class Tseitin:
                 self._merged_derived_predicates.append(dp)
                 for rule in rules:
                     self.domain.derived_predicates.remove(rule)
-    
+
     def _split_derived_predicates(self):
         # (optional) split derived predicates with "or"-rules again if they are
         # easier to handle that way
@@ -118,7 +118,7 @@ class Tseitin:
                 self._create_shortcuts_conjunction(element, par)
         if isinstance(formula, (pddl.Exists, pddl.Or)):
             self._create_shortcut(formula, par)
-            self._create_shortcuts_disjunction(formula, par) 
+            self._create_shortcuts_disjunction(formula, par)
 
     def _create_shortcuts_effect_old(self, eff, par):
         if isinstance(eff, pddl.ConditionalEffect):

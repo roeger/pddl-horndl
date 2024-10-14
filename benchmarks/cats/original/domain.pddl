@@ -1,6 +1,6 @@
 (define (domain BTcat)
 
-(:predicates 
+(:predicates
 	(cat ?x)
 	(bomb ?x)
 	(contains ?x ?y)

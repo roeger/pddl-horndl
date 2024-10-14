@@ -5,10 +5,9 @@ import sys
 import pddl
 import datalog
 import shutil
-import time
 
 from clipper import Clipper
-from update_runner import UpdateRunner
+from update_runner import UpdateRunner, Timer
 
 QUERY_PREDICATE_NAME = "QUERY"
 
@@ -75,22 +74,6 @@ class UCQCollector:
                     list(sorted(ucq.free_vars())))
 
 
-class Timer:
-    def __init__(self, message = None, end = "\n", file = sys.stderr, block = False):
-        if message:
-            print(message + "...", file = file, end="\n" if block else " ", flush=True)
-        self.message = message
-        self.block = block
-        self._t = None
-        self.end = end
-        self.file = file
-    def __enter__(self):
-        self._t = time.time()
-    def __exit__(self, *args, **kwargs):
-        elapsed = time.time() - self._t
-        print((self.message + " took " if self.block else "") + "%.4fs" % elapsed, end = self.end, file = self.file, flush=True)
-
-
 class Compilation:
     def __init__(self,
                  domain,
@@ -117,7 +100,7 @@ class Compilation:
                 self._prepare_queries_for_rewriting()
                 self._rewrite_ontology_and_ucqs()
             if self.update_runner:
-                with Timer("Adding update rules"):
+                with Timer("Constructing and adding coherence update rules"):
                     self._add_update_rules()
             with Timer("Generating derived predicated from datalog rules"):
                 self._adapt_predicate_names_to_clipper()
@@ -214,8 +197,8 @@ class Compilation:
                     self._datalog_rules.extend(rules)
 
     def _add_update_rules(self):
-        update_rules = self.update_runner()
-        self._datalog_rules.extend(update_rules)
+        rules = self.update_runner.run()
+        self._datalog_rules.extend(rules)
 
     def _adapt_predicate_names_to_clipper(self):
         for p in self.domain.predicates:
@@ -434,12 +417,17 @@ if __name__ == "__main__":
         print("clipper was not found.")
         sys.exit(1)
     clipper = Clipper(clipper, args.ontology, args.clipper_mqf, args.debug)
+
+    do_coherence_update = args.rls and args.nmo
+    update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology) if do_coherence_update else None
+
     with open(args.domain) as f:
         d = pddl.parse_domain(f.read())
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
 
-    update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls) if args.rls and args.nmo else None
+    if do_coherence_update:
+        d.extend_with_coherence_update(update_runner)
 
     compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering, update_runner=update_runner)
     compilation()

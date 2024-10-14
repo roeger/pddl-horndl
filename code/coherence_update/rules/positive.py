@@ -146,7 +146,6 @@ def invR_in_roleP(left_repr, right_repr):
     return [r_del, r_inc]
 
 
-
 POS_INCL_METHOD_MAP = {
     "aAInaBSub": atomicB_in_atomicA,
     "rInPSub": roleR_in_roleP,

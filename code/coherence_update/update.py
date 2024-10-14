@@ -127,4 +127,3 @@ class CohrenceUpdate:
             rules.extend(roleP_closure(a_role, r_reprs, s_reprs, t_reprs, q_reprs, w_reprs, u_reprs, a_reprs, b_reprs))
 
         return rules
-
