@@ -37,6 +37,10 @@ COHERENCE_UPDATE_PREDICATE_EXTENSIONS = {
     "request": "_request"
 }
 
+"""
+    dnh: PREDICATE: TYPE IS EGAL
+"""
+
 class Substitution:
     def __init__(self):
         self.substitutions = {}
@@ -1484,6 +1488,7 @@ def parse_domain(content, do_coherence_update=False):
         elif t == ':constants':
             result.constants = parse_typed_list(tokens)
         elif t == ':predicates':
+            # TODO(dnh): Refac later into Domain obj
             if do_coherence_update:
                 new_tok = TokenList(COHERENCE_UPDATE_TOKENS["updating"])
                 pred = Predicate(new_tok.next(), parse_typed_list(new_tok))
@@ -1528,7 +1533,6 @@ def parse_domain(content, do_coherence_update=False):
                     # print(repr(action.precondition))
                 elif t == ':effect':
                     eff = parse_effect(tokens)
-                    breakpoint()
                     action.effect = eff
                     # print(repr(action.effect))
                 else:

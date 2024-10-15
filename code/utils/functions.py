@@ -16,7 +16,7 @@ def get_repr(uri):
     if name.startswith('_:'):
         name = f"blank{name[2:]}"
     else:
-        name = re.sub(r'([a-z])([A-Z])', r'\1_\2', name).lower()
+        name = re.sub(r'([a-z])([A-Z])([0-9])', r'\1\2', name).lower()
     return name
 
 

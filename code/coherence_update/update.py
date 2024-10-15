@@ -56,11 +56,9 @@ class CohrenceUpdate:
         for key, builder_method in mapping.items():
             inclusions = self.tbox.incl_dict[key]
             for incl in inclusions:
-                left_repr = incl.get_left_repr()
-                right_repr = incl.get_right_repr()
                 left_closure_repr = incl.get_left_closure_repr()
                 right_closure_repr = incl.get_right_closure_repr()
-                rules.extend(builder_method(left_repr, right_repr))
+                rules.extend(builder_method(left_closure_repr, right_closure_repr))
                 if closure_type == "positive":
                     if key == "aAInaBSub":
                         self._type1[left_closure_repr].append(incl.get_right_closure_repr())
@@ -99,9 +97,10 @@ class CohrenceUpdate:
         for key, builder_method in POS_INCL_CLOSURE_METHOD_MAP.items():
             inclusions = self.tbox.incl_dict[key]
             for incl in inclusions:
-                left_repr = incl.get_left_repr()
-                right_repr = incl.get_right_repr()
+                left_repr = incl.get_left_closure_repr()
+                right_repr = incl.get_right_closure_repr()
                 if key in ["aAInaBSub", "ePInaBSub", "ePMinusInaBSub"]:
+                    # passed
                     closure_reprs = self._type1[left_repr]
                     rules.extend(builder_method(left_repr, right_repr, closure_reprs))
                 elif key in ["rInPSub", "rInPMinusSub"]:

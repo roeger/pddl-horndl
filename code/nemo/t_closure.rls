@@ -144,9 +144,9 @@ invOf(?X, ?Y) :- invOf(?Y, ?X).
 % atomicA in atomicB
 aAInaBSub(?A, ?B, ?A, ?B) :- sub(?A, ?B), concept(?A), concept(?B), atomic(?A), atomic(?B), ?A != ?B.
 % existsP in atomicB`
-ePInaBSub(?ExistsP, ?B, ?P, ?B) :- sub(?ExistsP, ?B), domOf(?ExistsP, ?P), atomic(?B) .
+ePInaBSub(?ExistsP, ?B, ?P, ?B) :- sub(?ExistsP, ?B), domOf(?ExistsP, ?P), atomic(?B), atomic(?P) .
 % existsPMinus in atomic B
-ePMinusInaBSub(?ExistsPMinus, ?B, ?P, ?B) :- sub(?ExistsPMinus, ?B), atomic(?B), rngOf(?ExistsPMinus, ?P), invOf(?P, ?Q) .
+ePMinusInaBSub(?ExistsPMinus, ?B, ?P, ?B) :- sub(?ExistsPMinus, ?B), atomic(?B), rngOf(?ExistsPMinus, ?P), invOf(?P, ?Q), atomic(?P) .
 % r in p
 rInPSub(?R, ?P, ?R, ?P) :- sub(?R, ?P), role(?R), role(?P), atomic(?R), atomic(?P), ?R != ?P .
 % r in PMinus
@@ -162,11 +162,11 @@ aAInNotaBSub(?A, ?NotB, ?A, ?B) :- sub(?A, ?NotB), atomic(?A), concept(?A), negO
 % atomicB in not existsP
 aBInNotePSub(?B, ?NotExistsP, ?B, ?P) :- sub(?B, ?NotExistsP), atomic(?B), negOf(?NotExistsP, ?ExistsP), domOf(?ExistsP, ?P), atomic(?P) .
 % existsP in not atomicB
-ePInNotaBSub(?ExistP, ?NotB, ?P, ?B) :- sub(?ExistP, ?NotB), domOf(?ExistP, ?P), negOf(?NotB, ?B), atomic(?B) .
+ePInNotaBSub(?ExistP, ?NotB, ?P, ?B) :- sub(?ExistP, ?NotB), domOf(?ExistP, ?P), negOf(?NotB, ?B), atomic(?B), atomic(?P) .
 % atomicB in not existsPMinus
-aBInNotePMinusSub(?A, ?NotExistsPMinus, ?A, ?P) :- sub(?A, ?NotExistsPMinus), atomic(?A), negOf(?NotExistsPMinus, ?ExistsPMinus), rngOf(?ExistsPMinus, ?Q), invOf(?Q, ?P) .
+aBInNotePMinusSub(?A, ?NotExistsPMinus, ?A, ?P) :- sub(?A, ?NotExistsPMinus), atomic(?A), negOf(?NotExistsPMinus, ?ExistsPMinus), rngOf(?ExistsPMinus, ?Q), invOf(?Q, ?P), atomic(?P) .
 % existsPMinus in not atomicB
-ePMinusInNotaBSub(?ExistsPMinus, ?NotB, ?P, ?B) :- sub(?ExistsPMinus, ?NotB), rngOf(?ExistsPMinus, ?Q), invOf(?Q, ?P), negOf(?NotB, ?B), atomic(?B) .
+ePMinusInNotaBSub(?ExistsPMinus, ?NotB, ?P, ?B) :- sub(?ExistsPMinus, ?NotB), rngOf(?ExistsPMinus, ?Q), invOf(?Q, ?P), negOf(?NotB, ?B), atomic(?B), atomic(?P) .
 % r in not p (type 7)
 rInNotPSub(?R, ?NotP, ?R, ?P) :- sub(?R, ?NotP), role(?R), negOf(?NotP, ?P), role(?P), atomic(?R), atomic(?P) .
 % r in not PMinus (type 8)

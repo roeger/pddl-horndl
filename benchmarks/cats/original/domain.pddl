@@ -6,7 +6,7 @@
 	(contains ?x ?y)
 	(package ?x)
 	(disarmed ?x)
-	(object ?x)
+	(objectx ?x)
 )
 
 (:action dunk

@@ -8,6 +8,7 @@ import shutil
 
 from clipper import Clipper
 from update_runner import UpdateRunner, Timer
+# import pprint
 
 QUERY_PREDICATE_NAME = "QUERY"
 
@@ -198,6 +199,8 @@ class Compilation:
 
     def _add_update_rules(self):
         rules = self.update_runner.run()
+        # pprint.pprint(rules)
+        # breakpoint()
         self._datalog_rules.extend(rules)
 
     def _adapt_predicate_names_to_clipper(self):

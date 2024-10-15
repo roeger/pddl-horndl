@@ -6,6 +6,10 @@ import typing
 
 AUX_PREDICATE_NAME = "AUX"
 
+"""
+dnh: Flattening structures of PDDL files for faster planning
+    And other stuffs
+"""
 
 class Tseitin:
     def __init__(self,
