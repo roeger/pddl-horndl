@@ -1,5 +1,5 @@
 # Negation inclusion rules (Sec 2.4)
-
+from coherence_update.rules.positive import NOT
 
 def atomicB_in_not_atomicA(b_repr, a_repr):
     """
@@ -24,13 +24,13 @@ def atomicA_closure(a_repr, b_reprs, j_reprs, r_reprs):
     """
     r_closure = f"ins_{a_repr}(X) :- ins_{a_repr}_closure(X)"
     for b_repr in b_reprs:
-        r_closure += f", not ins_{b_repr}_request(X)"
+        r_closure += f", {NOT}ins_{b_repr}_request(X)"
 
     for idx, j_repr in enumerate(j_reprs):
-        r_closure += f", not ins_{j_repr}_request(X,Y{idx+1})"
+        r_closure += f", {NOT}ins_{j_repr}_request(X,Y{idx+1})"
 
     for idx, r_repr in enumerate(r_reprs):
-        r_closure += f", not ins_{r_repr}_request(Y{idx+1},X)"
+        r_closure += f", {NOT}ins_{r_repr}_request(Y{idx+1},X)"
     r_closure += "."
 
     return [r_closure]
@@ -58,21 +58,21 @@ def roleP_closure(p_repr, r_reprs, s_reprs, t_reprs, q_reprs, w_reprs, u_reprs, 
     """
     r_closure = f"ins_{p_repr}(X,Y) :- ins_{p_repr}_closure(X,Y)"
     for r_repr in r_reprs:
-        r_closure += f", not ins_{r_repr}_request(X,Y)"
+        r_closure += f", {NOT}ins_{r_repr}_request(X,Y)"
     for s_repr in s_reprs:
-        r_closure += f", not ins_{s_repr}_request(Y,X)"
+        r_closure += f", {NOT}ins_{s_repr}_request(Y,X)"
     for idx, t_repr in enumerate(t_reprs):
-        r_closure += f", not ins_{t_repr}_request(X,Y{idx+1})"
+        r_closure += f", {NOT}ins_{t_repr}_request(X,Y{idx+1})"
     for idx, q_repr in enumerate(q_reprs):
-        r_closure += f", not ins_{q_repr}_request(Y{idx+1},X)"
+        r_closure += f", {NOT}ins_{q_repr}_request(Y{idx+1},X)"
     for idx, w_repr in enumerate(w_reprs):
-        r_closure += f", not ins_{w_repr}_request(Y,X{idx+1})"
+        r_closure += f", {NOT}ins_{w_repr}_request(Y,X{idx+1})"
     for idx, u_repr in enumerate(u_reprs):
-        r_closure += f", not ins_{u_repr}_request(X{idx+1},Y)"
+        r_closure += f", {NOT}ins_{u_repr}_request(X{idx+1},Y)"
     for a_repr in a_reprs:
-        r_closure += f", not ins_{a_repr}_request(X)"
+        r_closure += f", {NOT}ins_{a_repr}_request(X)"
     for b_repr in b_reprs:
-        r_closure += f", not ins_{b_repr}_request(Y)"
+        r_closure += f", {NOT}ins_{b_repr}_request(Y)"
     r_closure += "."
 
     return [r_closure]
