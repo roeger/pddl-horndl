@@ -107,5 +107,6 @@ class Clipper:
         return ontology
 
     def adapt_predicate_name(self, predicate_name):
-        return re.sub(r"[^a-zA-Z0-9]", "", predicate_name.lower())
+        return re.sub(r'([a-z])([A-Z])([0-9])', r'\1\2\3', predicate_name).lower()
+        # return re.sub(r"[^a-zA-Z0-9]", "", predicate_name.lower())
 

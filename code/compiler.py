@@ -8,7 +8,6 @@ import shutil
 
 from clipper import Clipper
 from update_runner import UpdateRunner, Timer
-# import pprint
 
 QUERY_PREDICATE_NAME = "QUERY"
 
@@ -199,8 +198,6 @@ class Compilation:
 
     def _add_update_rules(self):
         rules = self.update_runner.run()
-        # pprint.pprint(rules)
-        # breakpoint()
         self._datalog_rules.extend(rules)
 
     def _adapt_predicate_names_to_clipper(self):
@@ -421,13 +418,18 @@ if __name__ == "__main__":
         sys.exit(1)
     clipper = Clipper(clipper, args.ontology, args.clipper_mqf, args.debug)
 
-    do_coherence_update = args.rls and args.nmo
-    update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology) if do_coherence_update else None
-
     with open(args.domain) as f:
-        d = pddl.parse_domain(f.read(), do_coherence_update=do_coherence_update)
+        d = pddl.parse_domain(f.read())
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
+
+    do_coherence_update = args.rls and args.nmo
+    if do_coherence_update:
+        update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology)
+        d.extend_for_coherence_update()
+        p.extend_for_coherence_update()
+    else:
+        update_runner = None
 
     compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering, update_runner=update_runner)
     compilation()
