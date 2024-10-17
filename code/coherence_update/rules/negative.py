@@ -1,13 +1,14 @@
 # Negation inclusion rules (Sec 2.4)
-from coherence_update.rules.positive import NOT
+from coherence_update.rules.symbols import NOT, RULE_SEPARATOR
+
 
 def atomicB_in_not_atomicA(b_repr, a_repr):
     """
         Caution: a_repr is representation of `A`, not `not A`
     """
-    r_del_b = f"del_{b_repr}(X) :- {b_repr}(X), ins_{a_repr}_request(X)."
-    r_del_a = f"del_{a_repr}(X) :- {a_repr}(X), ins_{b_repr}_request(X)."
-    r_inc = f"incompatible_update() :- ins_{b_repr}_request(X), ins_{a_repr}_request(X)."
+    r_del_b = f"del_{b_repr}(X){RULE_SEPARATOR}{b_repr}(X), ins_{a_repr}_request(X)."
+    r_del_a = f"del_{a_repr}(X){RULE_SEPARATOR}{a_repr}(X), ins_{b_repr}_request(X)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{b_repr}_request(X), ins_{a_repr}_request(X)."
 
     return [r_del_b, r_del_a, r_inc]
 
@@ -22,7 +23,7 @@ def atomicA_closure(a_repr, b_reprs, j_reprs, r_reprs):
         param r_reprs: list of R_i roles where
             A in lnot rng(R_i)
     """
-    r_closure = f"ins_{a_repr}(X) :- ins_{a_repr}_closure(X)"
+    r_closure = f"ins_{a_repr}(X){RULE_SEPARATOR}ins_{a_repr}_closure(X)"
     for b_repr in b_reprs:
         r_closure += f", {NOT}ins_{b_repr}_request(X)"
 
@@ -56,7 +57,7 @@ def roleP_closure(p_repr, r_reprs, s_reprs, t_reprs, q_reprs, w_reprs, u_reprs, 
         param b_reprs: list of B_i concepts where
             rng(P) in lnot B_i
     """
-    r_closure = f"ins_{p_repr}(X,Y) :- ins_{p_repr}_closure(X,Y)"
+    r_closure = f"ins_{p_repr}(X,Y){RULE_SEPARATOR}ins_{p_repr}_closure(X,Y)"
     for r_repr in r_reprs:
         r_closure += f", {NOT}ins_{r_repr}_request(X,Y)"
     for s_repr in s_reprs:
@@ -82,9 +83,9 @@ def atomicB_in_not_domP(b_repr, p_repr):
     """
         Caution: p_repr is representation of `P`, not `not existsP`
     """
-    r_del_b = f"del_{b_repr}(X) :- {b_repr}(X), ins_{p_repr}_request(X,Y)."
-    r_del_p = f"del_{p_repr}(X,Y) :- {p_repr}(X,Y), ins_{b_repr}_request(X)."
-    r_inc = f"incompatible_update() :- ins_{b_repr}_request(X), ins_{p_repr}_request(X,Y)."
+    r_del_b = f"del_{b_repr}(X){RULE_SEPARATOR}{b_repr}(X), ins_{p_repr}_request(X,Y)."
+    r_del_p = f"del_{p_repr}(X,Y){RULE_SEPARATOR}{p_repr}(X,Y), ins_{b_repr}_request(X)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{b_repr}_request(X), ins_{p_repr}_request(X,Y)."
 
     return [r_del_b, r_del_p, r_inc]
 
@@ -94,9 +95,9 @@ def domP_in_not_atomicB(p_repr, b_repr):
         Caution: p_repr is representation of `P`, not `existsP`
             b_repr is representation of `B`
     """
-    r_del_p = f"del_{b_repr}(X,Y) :- {b_repr}(X,Y), ins_{p_repr}_request(X)."
-    r_del_b = f"del_{p_repr}(X) :- {p_repr}(X), ins_{b_repr}_request(X,Y)."
-    r_inc = f"incompatible_update() :- ins_{p_repr}_request(X), ins_{b_repr}_request(X,Y)."
+    r_del_p = f"del_{b_repr}(X,Y){RULE_SEPARATOR}{b_repr}(X,Y), ins_{p_repr}_request(X)."
+    r_del_b = f"del_{p_repr}(X){RULE_SEPARATOR}{p_repr}(X), ins_{b_repr}_request(X,Y)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{p_repr}_request(X), ins_{b_repr}_request(X,Y)."
 
     return [r_del_b, r_del_p, r_inc]
 
@@ -105,9 +106,9 @@ def r_in_not_P(r_repr, p_repr):
     """
         Caution: p_repr is representation of `P`, not `not P`
     """
-    r_del_r = f"del_{r_repr}(X,Y) :- {r_repr}(X,Y), ins_{p_repr}_request(X,Y)."
-    r_del_p = f"del_{p_repr}(X,Y) :- {p_repr}(X,Y), ins_{r_repr}_request(X,Y)."
-    r_inc = f"incompatible_update() :- ins_{r_repr}_request(X,Y), ins_{p_repr}_request(X,Y)."
+    r_del_r = f"del_{r_repr}(X,Y){RULE_SEPARATOR}{r_repr}(X,Y), ins_{p_repr}_request(X,Y)."
+    r_del_p = f"del_{p_repr}(X,Y){RULE_SEPARATOR}{p_repr}(X,Y), ins_{r_repr}_request(X,Y)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{r_repr}_request(X,Y), ins_{p_repr}_request(X,Y)."
 
     return [r_del_r, r_del_p, r_inc]
 
@@ -116,9 +117,9 @@ def r_in_not_invP(r_repr, p_repr):
     """
         Caution: p_repr is representation of `P`, not `not invP`
     """
-    r_del_r = f"del_{r_repr}(X,Y) :- {r_repr}(X,Y), ins_{p_repr}_request(Y,X)."
-    r_del_p = f"del_{p_repr}(X,Y) :- {p_repr}(X,Y), ins_{r_repr}_request(Y,X)."
-    r_inc = f"incompatible_update() :- ins_{r_repr}_request(Y,X), ins_{p_repr}_request(Y,X)."
+    r_del_r = f"del_{r_repr}(X,Y){RULE_SEPARATOR}{r_repr}(X,Y), ins_{p_repr}_request(Y,X)."
+    r_del_p = f"del_{p_repr}(X,Y){RULE_SEPARATOR}{p_repr}(X,Y), ins_{r_repr}_request(Y,X)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{r_repr}_request(Y,X), ins_{p_repr}_request(Y,X)."
 
     return [r_del_r, r_del_p, r_inc]
 
