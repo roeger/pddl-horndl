@@ -2,7 +2,7 @@ domain="cats"
 prefix="benchmarks/$domain"
 fastdownward="/home/zinzin2312/repos/downward/fast-downward.py"
 
-for i in `seq 6 25`;
+for i in `seq 6 6`;
 do
   tseitin_domain="benchmarks/outputs/$domain/compiled_domain${i}.pddl"
 

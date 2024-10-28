@@ -95,9 +95,10 @@ def domP_in_not_atomicB(p_repr, b_repr):
         Caution: p_repr is representation of `P`, not `existsP`
             b_repr is representation of `B`
     """
-    r_del_p = f"del_{b_repr}(X,Y){RULE_SEPARATOR}{b_repr}(X,Y), ins_{p_repr}_request(X)."
-    r_del_b = f"del_{p_repr}(X){RULE_SEPARATOR}{p_repr}(X), ins_{b_repr}_request(X,Y)."
-    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{p_repr}_request(X), ins_{b_repr}_request(X,Y)."
+    # dnh: Used to be a bug here
+    r_del_p = f"del_{p_repr}(X,Y){RULE_SEPARATOR}{p_repr}(X,Y), ins_{b_repr}_request(X)."
+    r_del_b = f"del_{b_repr}(X){RULE_SEPARATOR}{b_repr}(X), ins_{p_repr}_request(X,Y)."
+    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{b_repr}_request(X), ins_{p_repr}_request(X,Y)."
 
     return [r_del_b, r_del_p, r_inc]
 

@@ -14,3 +14,8 @@
 * Later in compilation: UpdateRunner returns rules
 
 => Separation between 2 level; Easier Timer for Eval
+
+
+* Week 28/10:
+
+- BUG FIX IN RULE, TIME CONSUMING SINCE repr MSUT BE CHECKED BY HAND

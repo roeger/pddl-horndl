@@ -10,9 +10,17 @@ from clipper import Clipper
 from update_runner import UpdateRunner, Timer
 
 QUERY_PREDICATE_NAME = "QUERY"
+UPDATE_PREDICATE_NAME = "updating"
+INCOMPATIBLE_UPDATE_PREDICATE_NAME = "incompatible_update"
 
 def is_primed_predicate_name(name):
     return name.startswith("DATALOG_")
+
+def is_update_predicate_name(name):
+    return name == UPDATE_PREDICATE_NAME or name == INCOMPATIBLE_UPDATE_PREDICATE_NAME
+
+def is_coherence_update_predicate_name(name):
+    return name.startswith("ins_") or name.startswith("del_") or is_update_predicate_name(name)
 
 def prime_predicate_name(original):
     return "DATALOG_%s" % original.upper()
@@ -94,6 +102,10 @@ class Compilation:
 
     def __call__(self):
         with Timer("Compilation", block=True):
+            if self.update_runner:
+                with Timer("Extending domain for coherence update"):
+                    self.domain.extend_for_coherence_update()
+                    self.problem.extend_for_coherence_update()
             with Timer("Collecting queries"):
                 self._collect_and_replace_ucqs()
             with Timer("Rewriting"):
@@ -108,6 +120,7 @@ class Compilation:
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
+                # dnh: correct upto here
                 self._compile_datalog_rules()
             with Timer("Finalizing PDDL"):
                 self._unprime_conditions_and_enforce_consistency()
@@ -198,13 +211,16 @@ class Compilation:
 
     def _add_update_rules(self):
         rules = self.update_runner.run()
+        # for rule in rules:
+        #     print(rule)
+        # breakpoint()
         self._datalog_rules.extend(rules)
 
     def _adapt_predicate_names_to_clipper(self):
         for p in self.domain.predicates:
             p.name = self.clipper.adapt_predicate_name(p.name)
         def apply_to_fact(fact):
-            if is_primed_predicate_name(fact.predicate):
+            if is_primed_predicate_name(fact.predicate) or is_coherence_update_predicate_name(fact.predicate):
                 return fact
             return pddl.Fact(self.clipper.adapt_predicate_name(fact.predicate), fact.parameters)
         def apply_to_effect(eff):
@@ -223,16 +239,16 @@ class Compilation:
         self._duplicate_rules = set()
         self._unimportant_rules = []
         inconsistent_atom = datalog.Atom(INCONSISTENCY_PREDICATE_NAME, [])
-        for idx, s in enumerate(datalog_rules):
-            if len(s.strip()) == 0:
+        for idx, dlr in enumerate(datalog_rules):
+            if len(dlr.strip()) == 0:
                 continue
-            rule = datalog.parse_rule(s)
+            rule = datalog.parse_rule(dlr)
             if encodes_inconsistency(rule.head):
                 rule.head = inconsistent_atom
             if self.expensive_duplicate_filtering:
                 rule = rule.canonical()
             query_id = get_query_id(rule.head.name)
-            if query_id != None and query_id in self._unparameterized_queries:
+            if query_id != None and query_id in self._unparameterized_queries or (self.update_runner and is_update_predicate_name(rule.head.name)):
                 rule.head.parameters = []
             if self.filter_duplicates:
                 old_size = len(self._datalog_rules)
@@ -248,6 +264,7 @@ class Compilation:
         necessary_predicates = self.ucq_collector.queried_predicates \
             | set([INCONSISTENCY_PREDICATE_NAME]) \
             | set([query_predicate_name(i) for i in range(len(self.ucq_collector.ucqs))])
+
         conditioned_predicates = necessary_predicates
         for rule in self._datalog_rules:
             for t in rule.tail:
@@ -255,6 +272,8 @@ class Compilation:
                     t = t.element
                 if isinstance(t, datalog.Atom):
                     conditioned_predicates.add(t.name)
+            if self.update_runner and is_coherence_update_predicate_name(rule.head.name):
+                conditioned_predicates.add(rule.head.name)
         while True:
             dr = []
             cd = necessary_predicates
@@ -288,7 +307,12 @@ class Compilation:
                 else:
                     subst[x] = "?y%d" % num_ext
                     num_ext += 1
-            primed_predicate_name = prime_predicate_name(rule.head.name)
+
+            # dnh: Do not transform update predicates
+            if self.update_runner and is_coherence_update_predicate_name(rule.head.name):
+                primed_predicate_name = rule.head.name
+            else:
+                primed_predicate_name = prime_predicate_name(rule.head.name)
             predicate = pddl.Predicate(
                     primed_predicate_name,
                     [pddl.TypedList([subst[x] for x in rule.head.parameters])])
@@ -297,10 +321,12 @@ class Compilation:
                 self.predicates.add(primed_predicate_name)
                 if rule.head.name in self.predicates \
                         and not rule.head.name.startswith(QUERY_PREDICATE_NAME) \
-                        and rule.head.name != INCONSISTENCY_PREDICATE_NAME:
+                        and rule.head.name != INCONSISTENCY_PREDICATE_NAME \
+                        and not is_coherence_update_predicate_name(rule.head.name):
                     self.domain.derived_predicates.append(pddl.DerivedPredicate(
                         predicate,
                         pddl.Fact(rule.head.name, [subst[x] for x in rule.head.parameters])))
+
             self.predicates_in_ontology.add(rule.head.name)
 
             cond = []
@@ -310,9 +336,15 @@ class Compilation:
                     neg = True
                     t = t.element
                 if isinstance(t, datalog.Atom):
-                    cond.append(pddl.Fact(
-                        prime_predicate_name(t.name),
-                        [ subst[x] for x in t.parameters ]))
+                    # dnh: Do not transform body if it's update predicates
+                    if self.update_runner and is_coherence_update_predicate_name(t.name):
+                        cond.append(pddl.Fact(
+                            t.name,
+                            [ subst[x] for x in t.parameters ]))
+                    else:
+                        cond.append(pddl.Fact(
+                            prime_predicate_name(t.name),
+                            [ subst[x] for x in t.parameters ]))
                     self.predicates_in_ontology.add(t.name)
                 else:
                     # TODO correct?
@@ -323,7 +355,8 @@ class Compilation:
                 if neg:
                     cond[-1] = pddl.Not(cond[-1])
             cond = pddl.And(cond)
-            if num_ext > 0:
+            # dnh: Do not add existential quantifiers for update predicates
+            if num_ext > 0 and not is_coherence_update_predicate_name(rule.head.name):
                 cond = pddl.Exists(
                         get_parameter_list(num_ext, "?y%d"),
                         cond)
@@ -339,7 +372,7 @@ class Compilation:
                 return pddl.Fact(unprimed, fact.parameters)
             return fact
         self._apply_to_all_conditions(pddl.Fact, unprimer)
-        if (prime_predicate_name(INCONSISTENCY_PREDICATE_NAME) in self.predicates):
+        if (prime_predicate_name(INCONSISTENCY_PREDICATE_NAME) in self.predicates) and not self.update_runner:
             is_consistent = pddl.Not(pddl.Fact(prime_predicate_name(INCONSISTENCY_PREDICATE_NAME), []))
             for action in self.domain.actions:
                 action.precondition = pddl.And([is_consistent, action.precondition]).simplified()
@@ -351,10 +384,13 @@ class Compilation:
 
     def print_compilation_information(self):
         ontology = []
-        queries =  []
+        queries = []
+        updates = []
         for rule in self._datalog_rules:
             if rule.head.name.startswith(QUERY_PREDICATE_NAME):
                 queries.append(rule)
+            elif is_coherence_update_predicate_name(rule.head.name):
+                updates.append(rule)
             else:
                 ontology.append(rule)
         print("%% ONTOLOGY")
@@ -379,6 +415,12 @@ class Compilation:
                 print("%% %s" % rule)
             print("")
 
+        if self.update_runner:
+            print("%% UPDATE RULES:")
+            for rule in sorted(updates):
+                print("%% %s" % rule)
+            print("")
+
         if len(self._unimportant_rules) > 0:
             print("%% IRRELEVANT RULES:")
             for rule in self._unimportant_rules:
@@ -386,7 +428,7 @@ class Compilation:
             print("")
 
         static_datalog_atoms = sorted([p for p in self.predicates_in_ontology
-            if not prime_predicate_name(p) in self.predicates])
+            if not prime_predicate_name(p) in self.predicates and not is_coherence_update_predicate_name(p)])
         if len(static_datalog_atoms) > 0:
             print("%% CONCEPTS/RELATIONS NOT DERIVABLE FROM ONTOLOGY:")
             for name in static_datalog_atoms:
@@ -426,8 +468,6 @@ if __name__ == "__main__":
     do_coherence_update = args.rls and args.nmo
     if do_coherence_update:
         update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology)
-        d.extend_for_coherence_update()
-        p.extend_for_coherence_update()
     else:
         update_runner = None
 

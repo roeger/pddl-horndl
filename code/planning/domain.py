@@ -1,11 +1,6 @@
 from planning.logic import Predicate, Fact, Not, And, DelEffect, AddEffect, Action, ConjunctiveEffect, ConditionalEffect
 
-INCOMPATIBLE_UPDATE_STR = "incompatible_update"
-ACTION_UPDATE_NAME = "update"
-UPDATE_STR = "updating"
-ADD_PREFIX_STR = "ins_"
-DEL_PREFIX_STR = "del_"
-SUFFIX = "_request"
+from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE_STR, ACTION_UPDATE_NAME, UPDATE_STR, ADD_PREFIX_STR, DEL_PREFIX_STR, SUFFIX
 
 class Domain:
     def __init__(self):
@@ -86,9 +81,22 @@ class Domain:
             new_predicate = DEL_PREFIX_STR + predicate + SUFFIX
             fact.predicate = new_predicate
         def wrapper(eff):
-            fn = isinstance(eff, AddEffect) and adjust_for_add or adjust_for_del
-            f = eff.fact
-            f.apply(Fact, fn)
+            if isinstance(eff, AddEffect):
+                fn = adjust_for_add
+                f = eff.fact
+                f.apply(Fact, fn)
+            elif isinstance(eff, DelEffect):
+                fn = adjust_for_del
+                f = eff.fact
+                f.apply(Fact, fn)
+            elif isinstance(eff, ConditionalEffect):
+                wrapper(eff.effect)
+            elif isinstance(eff, ConjunctiveEffect):
+                for e in eff.elements:
+                    wrapper(e)
+            else:
+                raise ValueError("Unknown effect type: %r" % eff)
+
         # Adjust actions
         for action in self.actions:
             # Change precondition
@@ -97,16 +105,15 @@ class Domain:
             new_pre = And([pre, not_updating])
             action.precondition = new_pre
             # Change effect
-            effects = action.effect.effect
-            for eff in effects.elements:
-                eff.apply(AddEffect, wrapper)
-                eff.apply(DelEffect, wrapper)
+            effekt = action.effect
+            wrapper(effekt)
+
         # Construct update action
         a = Action(ACTION_UPDATE_NAME)
         a.parameters = []
         updating = Fact(UPDATE_STR)
-        compatible = Not(Fact(INCOMPATIBLE_UPDATE_STR))
-        a.precondition = And([updating, compatible])
+        compatible_update = Not(Fact(INCOMPATIBLE_UPDATE_STR))
+        a.precondition = And([updating, compatible_update])
         elements = []
         new_preds =[Predicate(UPDATE_STR, []), Predicate(INCOMPATIBLE_UPDATE_STR, [])]
         for predicate in self.predicates:
@@ -152,4 +159,3 @@ class Domain:
         a.effect = effects
         self.actions.append(a)
         self.predicates.extend(new_preds)
-
