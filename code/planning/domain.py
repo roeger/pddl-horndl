@@ -1,6 +1,6 @@
 from planning.logic import Predicate, Fact, Not, And, DelEffect, AddEffect, Action, ConjunctiveEffect, ConditionalEffect
 
-from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE_STR, ACTION_UPDATE_NAME, UPDATE_STR, ADD_PREFIX_STR, DEL_PREFIX_STR, SUFFIX
+from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE_STR, ACTION_UPDATE_NAME, UPDATE_STR, ADD_PREFIX_STR, DEL_PREFIX_STR, REQUEST_SUFFIX, CLOSURE_SUFFIX
 
 class Domain:
     def __init__(self):
@@ -74,11 +74,11 @@ class Domain:
     def extend_for_coherence_update(self):
         def adjust_for_add(fact):
             predicate = fact.predicate
-            new_predicate = ADD_PREFIX_STR + predicate + SUFFIX
+            new_predicate = ADD_PREFIX_STR + predicate + REQUEST_SUFFIX
             fact.predicate = new_predicate
         def adjust_for_del(fact):
             predicate = fact.predicate
-            new_predicate = DEL_PREFIX_STR + predicate + SUFFIX
+            new_predicate = DEL_PREFIX_STR + predicate + REQUEST_SUFFIX
             fact.predicate = new_predicate
         def wrapper(eff):
             if isinstance(eff, AddEffect):
@@ -139,11 +139,13 @@ class Domain:
             new_preds.append(Predicate(del_a, p_params))
 
             # e_del_ins_a_request and e_del_del_a_request
-            ins_a_request = ins_a + SUFFIX
-            del_a_request = del_a + SUFFIX
+            ins_a_request = ins_a + REQUEST_SUFFIX
+            del_a_request = del_a + REQUEST_SUFFIX
+            ins_a_closure = ins_a + CLOSURE_SUFFIX
 
             f_del_ins_cond = Fact(ins_a_request, f_params)
             f_del_del_cond = Fact(del_a_request, f_params)
+            f_del_closure = Fact(ins_a_closure, f_params)
 
             del_ins_eff = DelEffect(f_del_ins_cond)
             del_del_eff = DelEffect(f_del_del_cond)
@@ -154,6 +156,7 @@ class Domain:
             elements.extend([eff_del_ins, eff_del_del])
             new_preds.append(Predicate(ins_a_request, p_params))
             new_preds.append(Predicate(del_a_request, p_params))
+            new_preds.append(Predicate(ins_a_closure, p_params))
 
         effects = ConjunctiveEffect(elements)
         a.effect = effects

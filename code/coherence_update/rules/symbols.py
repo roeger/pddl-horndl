@@ -6,5 +6,6 @@ ACTION_UPDATE_NAME = "update"
 UPDATE_STR = "updating"
 ADD_PREFIX_STR = "ins_"
 DEL_PREFIX_STR = "del_"
-SUFFIX = "_request"
+REQUEST_SUFFIX = "_request"
+CLOSURE_SUFFIX = "_closure"
 
