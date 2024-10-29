@@ -1,19 +1,20 @@
+From: Duy Nhu <duy.nhu.040197@gmail.com>
 diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshiq/cli/CommandQuery.java clipper/clipper-cli/src/main/java/org/semanticweb/clipper/hornshiq/cli/CommandQuery.java
 --- clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshiq/cli/CommandQuery.java	2016-05-23 19:11:17.000000000 +0200
 +++ clipper/clipper-cli/src/main/java/org/semanticweb/clipper/hornshiq/cli/CommandQuery.java	2021-07-06 12:16:41.000000000 +0200
 @@ -61,7 +61,8 @@
- 
+
  		qaHornSHIQ.setOntologies(ontologies);
- 
+
 -		CQ cq = parseCQ(ontologies);
 +		List<CQ> cqList = parseCQ(ontologies);
 +		CQ cq = cqList.get(0);
- 
+
  		qaHornSHIQ.setDatalogFileName(this.datalog);
  		qaHornSHIQ.setQueryRewriter(this.getRewriter());
 @@ -103,7 +104,6 @@
  	}
- 
+
  	/**
 -	 * @param qaHornSHIQ
  	 * @param startTime
@@ -25,40 +26,40 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
 @@ -8,6 +8,8 @@
  import org.semanticweb.clipper.hornshiq.rule.CQ;
  import org.semanticweb.owlapi.model.OWLOntology;
- 
+
 +import java.util.ArrayList;
 +import java.util.List;
  import java.util.Set;
- 
+
  @Parameters(commandNames = { "rewrite" }, separators = "=", commandDescription = "rewrite the query w.r.t. the ontology, and generate a datalog program")
 @@ -44,9 +46,10 @@
  	}
- 
+
  	@Override
 -	void exec() {
 -		System.setProperty("entityExpansionLimit", "512000");
 +	void exec(){
- 
+
 +		System.setProperty("entityExpansionLimit", "512000");
 +		List<CQ> cqList = new ArrayList<>();
  		QAHornSHIQ qaHornSHIQ = new QAHornSHIQ();
  		// note that naming strategy should be set after create new QAHornSHIQ
  		// ClipperManager.getInstance().setNamingStrategy(
 @@ -60,16 +63,16 @@
- 
+
  		qaHornSHIQ.setOntologies(ontologies);
- 
+
 -		if (rewritingOntologyAndQuery || rewritingTBoxAndQuery || this.cqFile != null || this.sparqlFile != null || this.sparqlString != null) {
 +		if (rewritingOntologyAndQuery || rewritingTBoxAndQuery || this.cqFile != null || this.sparqlFile != null || this.sparqlString != null || this.cqFiles != null) {
- 
+
 -			CQ cq = parseCQ(ontologies);
 +			cqList = parseCQ(ontologies);
 +			CQ cq = cqList.get(0);
- 
+
  			qaHornSHIQ.setQuery(cq);
  		}
  		// TODO: only consider related rules
- 
+
  		qaHornSHIQ.setDatalogFileName(datalog);
 -
  		if (this.isRewritingOntologyOnly()) { // -o
@@ -79,10 +80,10 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
 @@ -6,6 +6,7 @@
  import org.semanticweb.clipper.util.Ucq2SqlConverter;
  import org.semanticweb.owlapi.model.OWLOntology;
- 
+
 +import java.util.List;
  import java.util.Set;
- 
+
  @Parameters(commandNames = { "sparql2sql" },
 @@ -24,7 +25,8 @@
  	@Override
@@ -100,7 +101,7 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
 @@ -13,13 +13,14 @@
  import org.semanticweb.owlapi.model.OWLOntology;
  import org.semanticweb.owlapi.model.OWLOntologyCreationException;
- 
+
 -import java.io.File;
 -import java.io.FileNotFoundException;
 -import java.io.FileReader;
@@ -113,13 +114,13 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
  import java.util.Set;
 +import java.util.stream.Collectors;
 +import java.util.stream.Stream;
- 
+
  /**
   * Common base class for CommandQuery and CommandRewrite
 @@ -47,17 +48,31 @@
  	@Parameter(names = { "-r", "-rewriter" }, description = "rewriter", hidden = true)
  	protected String rewriter = "new";
- 
+
 +
 +
 +	/**
@@ -135,13 +136,13 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
  		super(jc);
  		jc.addCommand(this);
  	}
- 
+
 -	protected CQ parseCQ(Set<OWLOntology> ontologies) {
 +	protected List<CQ> parseCQ(Set<OWLOntology> ontologies) {
  		CQ cq = null;
 +		List<CQ> cqList = new ArrayList<>();
 +
- 
+
          if(sparqlString!=null){
              Query query = QueryFactory.create(sparqlString);
              cq = new SparqlToCQConverter().compileQuery(query);
@@ -151,12 +152,12 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
                  FileReader reader = new FileReader(new File(sparqlFile));
 @@ -67,29 +82,56 @@
                  Query query = QueryFactory.create(queryString);
- 
+
                  cq = new SparqlToCQConverter().compileQuery(query);
 -
 +				cqList.add(cq);
                  reader.close();
- 
+
  			} catch (IOException e) {
  				e.printStackTrace();
  			}
@@ -205,19 +206,19 @@ diff -Naur clipper-old/clipper-cli/src/main/java/org/semanticweb/clipper/hornshi
 -		return cq;
 +		return cqList;
  	}
- 
+
 +
 +
  	protected Set<OWLOntology> loadOntologies() {
  		Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
- 
+
 @@ -107,8 +149,27 @@
  		return ontologies;
  	}
- 
+
 +
  	protected String errorMessage;
- 
+
 +
 +
 +	/**
@@ -255,18 +256,18 @@ diff -Naur clipper-old/clipper-reasoner/src/main/java/org/semanticweb/clipper/ho
 --- clipper-old/clipper-reasoner/src/main/java/org/semanticweb/clipper/hornshiq/queryanswering/QAHornSHIQ.java	2016-05-23 19:11:17.000000000 +0200
 +++ clipper/clipper-reasoner/src/main/java/org/semanticweb/clipper/hornshiq/queryanswering/QAHornSHIQ.java	2021-07-06 12:16:41.000000000 +0200
 @@ -118,7 +118,7 @@
- 
+
  			reduceOntologyToDatalog(tb);
- 
+
 -			rewriteQuery(tb);
 +			 rewriteQuery(tb);
- 
+
  			reduceRewrittenQueriesToDatalog(tb);
- 
+
 @@ -153,7 +153,6 @@
- 
+
  		TBoxReasoner tb = saturateTBox();
- 
+
 -
  		ReductionToDatalog reduction = new ReductionToDatalog(clipperOntology, cqFormatter);
  		// reduction.setNamingStrategy(this.namingStrategy);
@@ -274,7 +275,7 @@ diff -Naur clipper-old/clipper-reasoner/src/main/java/org/semanticweb/clipper/ho
 @@ -208,9 +207,46 @@
  		out.close();
  	}
- 
+
 +
 +	/**
 +	 * @author Steffen Breuer
@@ -317,4 +318,4 @@ diff -Naur clipper-old/clipper-reasoner/src/main/java/org/semanticweb/clipper/ho
 +
  	private void rewriteQuery(TBoxReasoner tb) {
  		QueryRewriter qr = createQueryRewriter(clipperOntology, tb);
- 
+
