@@ -437,28 +437,28 @@ class Compilation:
 
 
 if __name__ == "__main__":
-    p = argparse.ArgumentParser()
-    p.add_argument("ontology")
-    p.add_argument("domain")
-    p.add_argument("problem")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ontology")
+    parser.add_argument("domain")
+    parser.add_argument("problem")
 
-    p.add_argument("--rls", default="t_closure.rls")
-    p.add_argument("--nmo", default="nmo")
+    parser.add_argument("--rls", default="t_closure.rls")
+    parser.add_argument("--nmo", default="nmo")
 
-    p.add_argument("--clipper-mqf", default=False, action="store_true", help="Use multiple-query feature of clipper.")
-    p.add_argument("--clipper", default="clipper.sh")
-    p.add_argument("--out-domain", "-d", default="domain.pddl")
-    p.add_argument("--out-problem", "-p", default="problem.pddl")
-    p.add_argument("--verbose", "-v", default=False, action='store_true')
-    p.add_argument("--no-filter-unimportant", default=False, action="store_true")
-    p.add_argument("--no-expensive-filtering", default=False, action="store_true")
-    p.add_argument("--debug", default=False, action="store_true")
-    args = p.parse_args()
+    parser.add_argument("--clipper-mqf", default=False, action="store_true", help="Use multiple-query feature of clipper.")
+    parser.add_argument("--clipper", default="clipper.sh")
+    parser.add_argument("--out-domain", "-d", default="domain.pddl")
+    parser.add_argument("--out-problem", "-p", default="problem.pddl")
+    parser.add_argument("--verbose", "-v", default=False, action='store_true')
+    parser.add_argument("--no-filter-unimportant", default=False, action="store_true")
+    parser.add_argument("--no-expensive-filtering", default=False, action="store_true")
+    parser.add_argument("--debug", default=False, action="store_true")
+    args = parser.parse_args()
     clipper = shutil.which(args.clipper)
     if clipper is None:
         print("clipper was not found.")
         sys.exit(1)
-    clipper = Clipper(clipper, args.ontology, args.clipper_mqf, args.debug)
+    clipper = Clipper(args.clipper, args.ontology, args.clipper_mqf, args.debug)
 
     with open(args.domain) as f:
         d = pddl.parse_domain(f.read())

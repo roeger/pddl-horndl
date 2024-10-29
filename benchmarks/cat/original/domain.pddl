@@ -19,8 +19,8 @@
 (:action let_the_cats_out
   :parameters (?x ?y)
   :precondition (mko (package ?x))
-  :effect (when (mko (contains ?x ?y))
-                  (and (not (contains ?x ?y)) (cat ?y)))
+  :effect (when (mko (and (contains ?x ?y) (cat ?y)))
+                  (and (not (contains ?x ?y)) (disarmed ?x)))
             )
 
 )

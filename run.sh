@@ -1,10 +1,12 @@
 domain="cat"
 prefix="benchmarks/$domain"
+## path to a (patched) clipper clipper="/home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh" nmo="/home/zinzin2312/repos/nemo/target/release/nmo"
+## laptop
+clipper="/home/zinzin2312/Desktop/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
+nmo="/home/zinzin2312/Desktop/repos/nemo/target/release/nmo"
 
-# path to a (patched) clipper
-clipper="/home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
-nmo="/home/zinzin2312/repos/nemo/target/release/nmo"
 rls="code/nemo/t_closure.rls"
+
 
 # path to compiler.py
 compiler="code/compiler.py"
@@ -16,7 +18,7 @@ input_domain=$prefix/original/domain.pddl
 # cats: 6
 # elevator: 15
 
-for i in `seq 15 15`;
+for i in `seq 6 6`;
 do
   input_problem="$prefix/original/${domain}Problem${i}.pddl"
 

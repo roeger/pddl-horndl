@@ -81,14 +81,17 @@ class Domain:
             new_predicate = DEL_PREFIX_STR + predicate + REQUEST_SUFFIX
             fact.predicate = new_predicate
         def wrapper(eff):
+            new_eff = None
             if isinstance(eff, AddEffect):
-                fn = adjust_for_add
-                f = eff.fact
-                f.apply(Fact, fn)
+                params = eff.fact.parameters
+                new_predicate = ADD_PREFIX_STR + eff.fact.predicate + REQUEST_SUFFIX
+                new_fact = Fact(new_predicate, params)
+                new_eff = AddEffect(new_fact)
             elif isinstance(eff, DelEffect):
-                fn = adjust_for_del
-                f = eff.fact
-                f.apply(Fact, fn)
+                params = eff.fact.parameters
+                new_predicate = DEL_PREFIX_STR + eff.fact.predicate + REQUEST_SUFFIX
+                new_fact = Fact(new_predicate, params)
+                new_eff = AddEffect(new_fact)
             elif isinstance(eff, ConditionalEffect):
                 wrapper(eff.effect)
             elif isinstance(eff, ConjunctiveEffect):
@@ -96,6 +99,8 @@ class Domain:
                     wrapper(e)
             else:
                 raise ValueError("Unknown effect type: %r" % eff)
+
+            return new_eff
 
         # Adjust actions
         for action in self.actions:
@@ -106,8 +111,11 @@ class Domain:
             action.precondition = new_pre
             # Change effect
             effekt = action.effect
-            wrapper(effekt)
+            new_eff = wrapper(effekt)
+            action.effect = new_eff
 
+        # dnh: FIX!!!
+        breakpoint()
         # Construct update action
         a = Action(ACTION_UPDATE_NAME)
         a.parameters = []
