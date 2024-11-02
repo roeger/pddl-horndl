@@ -3,6 +3,7 @@
 import os
 import subprocess
 import re
+from utils.functions import parse_name
 
 TEMPORARY_DATALOG_FILE = "__temp_clipper_datalog{0}.txt"
 TEMPORARY_QUERY_FILE = "__temp_clipper_query{0}.cq"
@@ -107,6 +108,6 @@ class Clipper:
         return ontology
 
     def adapt_predicate_name(self, predicate_name):
-        return re.sub(r'([a-z])([A-Z])([0-9])', r'\1\2\3', predicate_name).lower()
+        return parse_name(predicate_name)
         # return re.sub(r"[^a-zA-Z0-9]", "", predicate_name.lower())
 

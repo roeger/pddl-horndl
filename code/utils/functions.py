@@ -13,11 +13,17 @@ def read_csv(file_name):
 
 def get_repr(uri):
     name = uri.split('/')[-1].split('#')[-1]
+    # remove all _
     if name.startswith('_:'):
         name = f"blank{name[2:]}"
     else:
-        name = re.sub(r'([a-z])([A-Z])([0-9])', r'\1\2\3', name).lower()
+        name = parse_name(name)
     return name
+
+
+def parse_name(name):
+    return re.sub(r"[^a-zA-Z0-9]", "", name.lower())
+    # return re.sub(r'([a-z])([A-Z])([0-9])', r'\1\2\3', name).lower()
 
 
 def read_predicates(tmp_dir, pred_types):

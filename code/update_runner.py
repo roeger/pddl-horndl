@@ -8,6 +8,8 @@ from coherence_update.classes.tbox import TBox
 from coherence_update.classes.inclusion import INCLUSION_TYPES_ORDER
 from coherence_update.update import CohrenceUpdate
 from utils.functions import get_repr
+from coherence_update.rules.atomic import build_del_concept_and_incompatible_rules_for_atomic_concepts, build_del_role_and_incompatible_rules_for_roles
+from coherence_update.rules.negative import atomicA_closure, roleP_closure
 
 class Timer:
     def __init__(self, message = None, end = "\n", file = sys.stderr, block = False):
@@ -50,6 +52,15 @@ class UpdateRunner:
                     f.write(rule + '\n')
         return rules
 
+    def run_for_missing_predicates(self, missing_concepts, missing_roles):
+        rules = []
+        rules.extend(build_del_concept_and_incompatible_rules_for_atomic_concepts(missing_concepts))
+        rules.extend(build_del_role_and_incompatible_rules_for_roles(missing_roles))
+        for concept in missing_concepts:
+            rules.extend(atomicA_closure(concept, [], [], []))
+        for role in missing_roles:
+            rules.extend(roleP_closure(role, [], [], []))
+        return rules
 
     def compute_t_closure(self):
         if os.path.exists(TMP_DIR):
@@ -80,12 +91,9 @@ class UpdateRunner:
             f.write(rls)
         subprocess.call(['rm', '-rf', TMP_DIR])
 
-    # def unary_predicates(self):
-    #     return [get_repr(uri) for uri in self.a_atomics]
-    #
-    # def binary_predicates(self):
-    #     return set([get_repr(uri) for uri in self.roles + self.functs + self.invFunct])
-
+    def atomic_predicates(self):
+        atomic = self.a_atomics + self.roles + self.functs + self.invFunct
+        return set([get_repr(uri) for uri in atomic])
 
 if __name__ == '__main__':
     runner = UpdateRunner()

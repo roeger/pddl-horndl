@@ -1,11 +1,11 @@
 NOT = "-"
 RULE_SEPARATOR = " :- "
+WORD_SEPARATOR = "_"
 
-INCOMPATIBLE_UPDATE_STR = "incompatible_update"
+INCOMPATIBLE_UPDATE = "incompatible" + WORD_SEPARATOR + "update"
 ACTION_UPDATE_NAME = "update"
-UPDATE_STR = "updating"
-ADD_PREFIX_STR = "ins_"
-DEL_PREFIX_STR = "del_"
-REQUEST_SUFFIX = "_request"
-CLOSURE_SUFFIX = "_closure"
-
+UPDATING = "updating"
+INS = "ins" + WORD_SEPARATOR
+DEL = "del" + WORD_SEPARATOR
+REQUEST = WORD_SEPARATOR + "request"
+CLOSURE = WORD_SEPARATOR + "closure"

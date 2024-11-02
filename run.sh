@@ -1,9 +1,11 @@
 domain="cat"
 prefix="benchmarks/$domain"
-## path to a (patched) clipper clipper="/home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh" nmo="/home/zinzin2312/repos/nemo/target/release/nmo"
+## path to a (patched) clipper
+clipper="/home/zinzin2312/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
+nmo="/home/zinzin2312/repos/nemo/target/release/nmo"
 ## laptop
-clipper="/home/zinzin2312/Desktop/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
-nmo="/home/zinzin2312/Desktop/repos/nemo/target/release/nmo"
+# clipper="/home/zinzin2312/Desktop/repos/clipper/clipper-distribution/target/clipper/clipper.sh"
+# nmo="/home/zinzin2312/Desktop/repos/nemo/target/release/nmo"
 
 rls="code/nemo/t_closure.rls"
 

@@ -5,22 +5,24 @@ import sys
 import pddl
 import datalog
 import shutil
+import re
 
 from clipper import Clipper
 from update_runner import UpdateRunner, Timer
+from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE, UPDATING, INS, DEL
+from utils.functions import parse_name
 
 QUERY_PREDICATE_NAME = "QUERY"
-UPDATE_PREDICATE_NAME = "updating"
-INCOMPATIBLE_UPDATE_PREDICATE_NAME = "incompatible_update"
+INCONSISTENCY_PREDICATE_NAME = "inconsistent"
 
 def is_primed_predicate_name(name):
     return name.startswith("DATALOG_")
 
 def is_update_predicate_name(name):
-    return name == UPDATE_PREDICATE_NAME or name == INCOMPATIBLE_UPDATE_PREDICATE_NAME
+    return name == UPDATING or name == INCOMPATIBLE_UPDATE
 
 def is_coherence_update_predicate_name(name):
-    return name.startswith("ins_") or name.startswith("del_") or is_update_predicate_name(name)
+    return name.startswith(INS) or name.startswith(DEL) or is_update_predicate_name(name)
 
 def prime_predicate_name(original):
     return "DATALOG_%s" % original.upper()
@@ -48,10 +50,6 @@ def pddl_predicate(name, num_parameters, primed=False):
     return pddl.Predicate(
             prime_predicate_name(name) if primed else name,
             get_parameter_list(num_parameters))
-
-
-INCONSISTENCY_PREDICATE_NAME = "inconsistent"
-
 
 def encodes_inconsistency(head):
     return isinstance(head, datalog.Falsity) or head.name == 'nothing'
@@ -114,13 +112,13 @@ class Compilation:
             if self.update_runner:
                 with Timer("Constructing and adding coherence update rules"):
                     self._add_update_rules()
+                    self._add_rules_for_missing_predicates()
             with Timer("Generating derived predicated from datalog rules"):
                 self._adapt_predicate_names_to_clipper()
                 self._collect_predicate_information()
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
-                # dnh: correct upto here
                 self._compile_datalog_rules()
             with Timer("Finalizing PDDL"):
                 self._unprime_conditions_and_enforce_consistency()
@@ -211,6 +209,28 @@ class Compilation:
 
     def _add_update_rules(self):
         rules = self.update_runner.run()
+        self._datalog_rules.extend(rules)
+        # for rule in rules:
+        #     print(rule)
+        # breakpoint()
+
+    def _add_rules_for_missing_predicates(self):
+        # TODO(dnh): Leave unused predicates in domain and NOT in ontology untouch
+        appeared_in_domain = set([ p.name for p in self.domain.predicates if not is_coherence_update_predicate_name(p.name)])
+        missing = appeared_in_domain - self.update_runner.atomic_predicates()
+        missing_predicates = [p for p in self.domain.predicates if p.name in missing]
+        concepts = []
+        roles = []
+        for pred in missing_predicates:
+            if len(pred.parameters) == 1:
+                name = pred.name
+                concepts.append(parse_name(name))
+            elif len(pred.parameters) == 2:
+                name = pred.name
+                roles.append(parse_name(name))
+            else:
+                raise ValueError("Unexpected predicate arity: %d" % len(p.parameters))
+        rules = self.update_runner.run_for_missing_predicates(concepts, roles)
         # for rule in rules:
         #     print(rule)
         # breakpoint()
@@ -218,6 +238,8 @@ class Compilation:
 
     def _adapt_predicate_names_to_clipper(self):
         for p in self.domain.predicates:
+            if is_coherence_update_predicate_name(p.name):
+                continue
             p.name = self.clipper.adapt_predicate_name(p.name)
         def apply_to_fact(fact):
             if is_primed_predicate_name(fact.predicate) or is_coherence_update_predicate_name(fact.predicate):
@@ -262,8 +284,9 @@ class Compilation:
 
     def _drop_irrelevant_datalog_rules(self):
         necessary_predicates = self.ucq_collector.queried_predicates \
-            | set([INCONSISTENCY_PREDICATE_NAME]) \
             | set([query_predicate_name(i) for i in range(len(self.ucq_collector.ucqs))])
+        if not self.update_runner:
+            necessary_predicates = necessary_predicates | set([INCONSISTENCY_PREDICATE_NAME])
 
         conditioned_predicates = necessary_predicates
         for rule in self._datalog_rules:

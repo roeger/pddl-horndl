@@ -1,6 +1,8 @@
 from planning.logic import Predicate, Fact, Not, And, DelEffect, AddEffect, Action, ConjunctiveEffect, ConditionalEffect
 
-from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE_STR, ACTION_UPDATE_NAME, UPDATE_STR, ADD_PREFIX_STR, DEL_PREFIX_STR, REQUEST_SUFFIX, CLOSURE_SUFFIX
+from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE, ACTION_UPDATE_NAME, UPDATING, INS, DEL, REQUEST, CLOSURE
+
+from utils.functions import parse_name
 
 class Domain:
     def __init__(self):
@@ -72,31 +74,20 @@ class Domain:
         return constants
 
     def extend_for_coherence_update(self):
-        def adjust_for_add(fact):
-            predicate = fact.predicate
-            new_predicate = ADD_PREFIX_STR + predicate + REQUEST_SUFFIX
-            fact.predicate = new_predicate
-        def adjust_for_del(fact):
-            predicate = fact.predicate
-            new_predicate = DEL_PREFIX_STR + predicate + REQUEST_SUFFIX
-            fact.predicate = new_predicate
         def wrapper(eff):
             new_eff = None
             if isinstance(eff, AddEffect):
                 params = eff.fact.parameters
-                new_predicate = ADD_PREFIX_STR + eff.fact.predicate + REQUEST_SUFFIX
-                new_fact = Fact(new_predicate, params)
-                new_eff = AddEffect(new_fact)
+                predicate = INS + parse_name(eff.fact.predicate) + REQUEST
+                new_eff = AddEffect(Fact(predicate, params))
             elif isinstance(eff, DelEffect):
                 params = eff.fact.parameters
-                new_predicate = DEL_PREFIX_STR + eff.fact.predicate + REQUEST_SUFFIX
-                new_fact = Fact(new_predicate, params)
-                new_eff = AddEffect(new_fact)
+                predicate = DEL + parse_name(eff.fact.predicate) + REQUEST
+                new_eff = AddEffect(Fact(predicate, params))
             elif isinstance(eff, ConditionalEffect):
-                wrapper(eff.effect)
+                new_eff = ConditionalEffect(eff.condition, wrapper(eff.effect))
             elif isinstance(eff, ConjunctiveEffect):
-                for e in eff.elements:
-                    wrapper(e)
+                new_eff = ConjunctiveEffect([wrapper(e) for e in eff.elements])
             else:
                 raise ValueError("Unknown effect type: %r" % eff)
 
@@ -106,31 +97,31 @@ class Domain:
         for action in self.actions:
             # Change precondition
             pre = action.precondition
-            not_updating = Not(Fact(UPDATE_STR))
+            not_updating = Not(Fact(UPDATING))
             new_pre = And([pre, not_updating])
             action.precondition = new_pre
             # Change effect
-            effekt = action.effect
-            new_eff = wrapper(effekt)
-            action.effect = new_eff
+            eff = action.effect
+            action.effect = wrapper(eff)
 
-        # dnh: FIX!!!
-        breakpoint()
         # Construct update action
         a = Action(ACTION_UPDATE_NAME)
         a.parameters = []
-        updating = Fact(UPDATE_STR)
-        compatible_update = Not(Fact(INCOMPATIBLE_UPDATE_STR))
+        updating = Fact(UPDATING)
+        compatible_update = Not(Fact(INCOMPATIBLE_UPDATE))
         a.precondition = And([updating, compatible_update])
         elements = []
-        new_preds =[Predicate(UPDATE_STR, []), Predicate(INCOMPATIBLE_UPDATE_STR, [])]
+        new_preds = [
+            Predicate(UPDATING, []),
+            Predicate(INCOMPATIBLE_UPDATE, [])
+        ]
         for predicate in self.predicates:
             # e_addA and e_delA
             p_params = predicate.parameters
             f_params = p_params[0].elements
 
-            ins_a = ADD_PREFIX_STR + predicate.name
-            del_a = DEL_PREFIX_STR + predicate.name
+            ins_a = INS + parse_name(predicate.name)
+            del_a = DEL + parse_name(predicate.name)
 
             f_add_cond = Fact(ins_a, f_params)
             f_del_cond = Fact(del_a, f_params)
@@ -147,9 +138,9 @@ class Domain:
             new_preds.append(Predicate(del_a, p_params))
 
             # e_del_ins_a_request and e_del_del_a_request
-            ins_a_request = ins_a + REQUEST_SUFFIX
-            del_a_request = del_a + REQUEST_SUFFIX
-            ins_a_closure = ins_a + CLOSURE_SUFFIX
+            ins_a_request = ins_a + REQUEST
+            del_a_request = del_a + REQUEST
+            ins_a_closure = ins_a + CLOSURE
 
             f_del_ins_cond = Fact(ins_a_request, f_params)
             f_del_del_cond = Fact(del_a_request, f_params)

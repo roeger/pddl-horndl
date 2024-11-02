@@ -21,6 +21,6 @@
        (next i j)
        (next j k)
        (next k l)
-       (lift_at i))
+       (liftat i))
 (:goal (and (forall (?x - object) (or (served ?x) (not (DATALOG_PASSENGER ?x)))) (not (incompatible_update))))
 )

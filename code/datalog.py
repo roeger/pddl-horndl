@@ -1,4 +1,3 @@
-
 class __base:
     def __neq__(self, other):
         return not self.__eq__(other)
@@ -252,7 +251,3 @@ def parse_rule(rule):
             r.tail.append(parse_atom(tail[:j+1]))
             tail = tail[max(i+1,j+2):].strip()
     return r
-
-
-
-

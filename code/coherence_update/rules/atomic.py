@@ -1,6 +1,6 @@
 # General rules for deleting atomic concepts and roles
 # ~ First 2 bullet points/Sec 2.4
-from coherence_update.rules.symbols import RULE_SEPARATOR
+from coherence_update.rules.symbols import RULE_SEPARATOR, NOT, INS, DEL, REQUEST, INCOMPATIBLE_UPDATE, UPDATING
 
 
 def build_del_concept_and_incompatible_rules_for_atomic_concepts(a_concepts):
@@ -11,11 +11,12 @@ def build_del_concept_and_incompatible_rules_for_atomic_concepts(a_concepts):
     """
     rules = []
     for a_concept in a_concepts:
-        r_del = f"del_{a_concept}(X){RULE_SEPARATOR}del_{a_concept}_request(X), {a_concept}(X)."
-        r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{a_concept}_request(X), del_{a_concept}_request(X)."
-        r_update = f"updating(){RULE_SEPARATOR}ins_{a_concept}_request(X)."
-        r_update_1 = f"updating(){RULE_SEPARATOR}del_{a_concept}_request(X)."
-        rules.extend([r_del, r_inc, r_update, r_update_1])
+        r_ins = f"{INS}{a_concept}(X){RULE_SEPARATOR}{INS}{a_concept}{REQUEST}(X), {NOT}{a_concept}(X)."
+        r_del = f"{DEL}{a_concept}(X){RULE_SEPARATOR}{DEL}{a_concept}{REQUEST}(X), {a_concept}(X)."
+        r_inc = f"{INCOMPATIBLE_UPDATE}(){RULE_SEPARATOR}{INS}{a_concept}{REQUEST}(X), {DEL}{a_concept}{REQUEST}(X)."
+        r_update_ins = f"{UPDATING}(){RULE_SEPARATOR}{INS}{a_concept}{REQUEST}(X)."
+        r_update_del = f"{UPDATING}(){RULE_SEPARATOR}{DEL}{a_concept}{REQUEST}(X)."
+        rules.extend([r_del, r_inc, r_update_ins, r_update_del, r_ins])
 
     return rules
 
@@ -28,11 +29,12 @@ def build_del_role_and_incompatible_rules_for_roles(roles):
     """
     rules = []
     for role in roles:
-        r_del = f"del_{role}(X,Y){RULE_SEPARATOR}del_{role}_request(X,Y), {role}(X,Y)."
-        r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{role}_request(X,Y), del_{role}_request(X,Y)."
-        r_update = f"updating(){RULE_SEPARATOR}ins_{role}_request(X,Y)."
-        r_update_1 = f"updating(){RULE_SEPARATOR}del_{role}_request(X,Y)."
-        rules.extend([r_del, r_inc, r_update, r_update_1])
+        r_ins = f"{INS}{role}(X,Y){RULE_SEPARATOR}{INS}{role}{REQUEST}(X,Y), {NOT}{role}(X,Y)."
+        r_del = f"{DEL}{role}(X,Y){RULE_SEPARATOR}{DEL}{role}{REQUEST}(X,Y), {role}(X,Y)."
+        r_inc = f"{INCOMPATIBLE_UPDATE}(){RULE_SEPARATOR}{INS}{role}{REQUEST}(X,Y), {DEL}{role}{REQUEST}(X,Y)."
+        r_update_ins = f"{UPDATING}(){RULE_SEPARATOR}{INS}{role}{REQUEST}(X,Y)."
+        r_update_del = f"{UPDATING}(){RULE_SEPARATOR}{DEL}{role}{REQUEST}(X,Y)."
+        rules.extend([r_del, r_inc, r_update_ins, r_update_del, r_ins])
 
     return rules
 
@@ -57,20 +59,20 @@ def functP(repr):
     """
         Caution: repr is representation of `P`, not `functP`
     """
-    r_del = f"del_{repr}(X,Y){RULE_SEPARATOR}{repr}(X,Y), ins_{repr}_request(X,Z), Y!=Z."
-    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{repr}_request(X,Y), ins_{repr}_request(X,Z), Y!=Z."
-    r_update = f"updating(){RULE_SEPARATOR}ins_{repr}_request(X,Y)."
-    r_update_1 = f"updating(){RULE_SEPARATOR}del_{repr}_request(X,Y)."
-    return [r_del, r_inc, r_update, r_update_1]
+    r_del = f"{DEL}{repr}(X,Y){RULE_SEPARATOR}{repr}(X,Y), {INS}{repr}{REQUEST}(X,Z), Y!=Z."
+    r_inc = f"{INCOMPATIBLE_UPDATE}(){RULE_SEPARATOR}{INS}{repr}{REQUEST}(X,Y), {INS}{repr}{REQUEST}(X,Z), Y!=Z."
+    r_update_ins = f"{UPDATING}(){RULE_SEPARATOR}{INS}{repr}{REQUEST}(X,Y)."
+    r_update_del = f"{UPDATING}(){RULE_SEPARATOR}{DEL}{repr}{REQUEST}(X,Y)."
+    return [r_del, r_inc, r_update_ins, r_update_del]
 
 
 def functInvP(repr):
     """
         Caution: repr is representation of `P`, not `functP`
     """
-    r_del = f"del_{repr}(X,Y){RULE_SEPARATOR}{repr}(X,Y), ins_{repr}_request(Z,Y), X!=Z."
-    r_inc = f"incompatible_update(){RULE_SEPARATOR}ins_{repr}_request(X,Y), ins_{repr}_request(Z,Y), X!=Z."
-    r_update = f"updating(){RULE_SEPARATOR}ins_{repr}_request(X,Y)."
-    r_update_1 = f"updating(){RULE_SEPARATOR}del_{repr}_request(X,Y)."
-    return [r_del, r_inc, r_update, r_update_1]
+    r_del = f"{DEL}{repr}(X,Y){RULE_SEPARATOR}{repr}(X,Y), {INS}{repr}{REQUEST}(Z,Y), X!=Z."
+    r_inc = f"{INCOMPATIBLE_UPDATE}(){RULE_SEPARATOR}{INS}{repr}{REQUEST}(X,Y), {INS}{repr}{REQUEST}(Z,Y), X!=Z."
+    r_update_ins = f"{UPDATING}(){RULE_SEPARATOR}{INS}{repr}{REQUEST}(X,Y)."
+    r_update_del = f"{UPDATING}(){RULE_SEPARATOR}{DEL}{repr}{REQUEST}(X,Y)."
+    return [r_del, r_inc, r_update_ins, r_update_del]
 

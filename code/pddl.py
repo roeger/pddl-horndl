@@ -4,6 +4,7 @@ import argparse
 from planning.domain import Domain
 from planning.problem import Problem
 from planning.logic import *
+from utils.functions import parse_name
 
 LINEW=80
 WS = 2
@@ -404,7 +405,10 @@ def parse_domain(content):
         elif t == ':predicates':
             result.predicates = []
             while True:
-                result.predicates.append(Predicate(tokens.next(), parse_typed_list(tokens)))
+                name = tokens.next()
+                name = parse_name(name)
+                predicate = Predicate(name, parse_typed_list(tokens))
+                result.predicates.append(predicate)
                 assert not tokens.empty()
                 if tokens.get() == ')':
                     break
@@ -414,7 +418,9 @@ def parse_domain(content):
             result.functions = parse_typed_list(tokens, parse_function)
             # print("\n".join([repr(x) for x in result.functions]))
         elif t == ":derived":
-            p = Predicate(tokens.next(), parse_typed_list(tokens))
+            name = tokens.next()
+            name = parse_name(name)
+            p = Predicate(name, parse_typed_list(tokens))
             cond = simplify(parse_condition(tokens))
             assert tokens.get() == ')'
             tokens.pop()
