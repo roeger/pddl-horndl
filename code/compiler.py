@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
 import argparse
-import sys
-import pddl
-import datalog
 import shutil
-import re
+import sys
 
 from clipper import Clipper
-from update_runner import UpdateRunner, Timer
-from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE, UPDATING, INS, DEL
+from coherence_update.rules.symbols import DEL, INCOMPATIBLE_UPDATE, INS, UPDATING
+import datalog
+import pddl
+from update_runner import Timer, UpdateRunner
 from utils.functions import parse_name
 
 QUERY_PREDICATE_NAME = "QUERY"

@@ -2,7 +2,7 @@
 
 import os
 import subprocess
-import re
+
 from utils.functions import parse_name
 
 TEMPORARY_DATALOG_FILE = "__temp_clipper_datalog{0}.txt"

@@ -1,7 +1,23 @@
-from planning.logic import Predicate, Fact, Not, And, DelEffect, AddEffect, Action, ConjunctiveEffect, ConditionalEffect
-
-from coherence_update.rules.symbols import INCOMPATIBLE_UPDATE, ACTION_UPDATE_NAME, UPDATING, INS, DEL, REQUEST, CLOSURE
-
+from coherence_update.rules.symbols import (
+    ACTION_UPDATE_NAME,
+    CLOSURE,
+    DEL,
+    INCOMPATIBLE_UPDATE,
+    INS,
+    REQUEST,
+    UPDATING,
+)
+from planning.logic import (
+    Action,
+    AddEffect,
+    And,
+    ConditionalEffect,
+    ConjunctiveEffect,
+    DelEffect,
+    Fact,
+    Not,
+    Predicate,
+)
 from utils.functions import parse_name
 
 class Domain:
@@ -144,7 +160,7 @@ class Domain:
 
             f_del_ins_cond = Fact(ins_a_request, f_params)
             f_del_del_cond = Fact(del_a_request, f_params)
-            f_del_closure = Fact(ins_a_closure, f_params)
+            # f_del_closure = Fact(ins_a_closure, f_params)
 
             del_ins_eff = DelEffect(f_del_ins_cond)
             del_del_eff = DelEffect(f_del_del_cond)

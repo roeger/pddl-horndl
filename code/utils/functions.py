@@ -1,7 +1,6 @@
+from collections import defaultdict
 import csv
 import os
-from collections import defaultdict
-from pprint import pprint
 import re
 
 def read_csv(file_name):
