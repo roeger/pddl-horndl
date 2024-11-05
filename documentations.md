@@ -76,19 +76,13 @@ AFTER: cat(ac), datalogpackage(ao); package(ao); objectx(ac); disarmed(ao); data
 forall.x: (disarmed(x) or not(package(x)))
 
 
+## TODO:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* Delete not needed rules
+* Actions
+* IF DOESNT WORK
+    - FURTHER DELETION OF RULE?
+* TRY WITH OTHER DOMAINS
+* Complexity of planning:
+    - 1 Step planning
+    - Constant update action in the middle
