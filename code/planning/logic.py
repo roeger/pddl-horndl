@@ -1,6 +1,9 @@
 import itertools
 import re
 
+LINEW=80
+WS = 2
+
 class TraversableBaseClass:
     def __hash__(self):
         return hash(self.__repr__())

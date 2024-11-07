@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import argparse
+
 import pddl
-import typing
 
 AUX_PREDICATE_NAME = "AUX"
 
@@ -227,9 +227,11 @@ if __name__ == "__main__":
     p.add_argument("--out-domain", "-d", default="domain.pddl")
     p.add_argument("--out-problem", "-p", default="problem.pddl")
     p.add_argument("--verbose", "-v", default=False, action='store_true')
+    p.add_argument("--keep-name", "-n", default=False, action='store_true')
     args = p.parse_args()
+    preserve_names = args.keep_name
     with open(args.domain) as f:
-        d = pddl.parse_domain(f.read())
+        d = pddl.parse_domain(f.read(), preserve_predicate_names=preserve_names)
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
     tseitin = Tseitin(d, p)

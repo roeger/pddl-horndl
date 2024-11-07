@@ -13,6 +13,7 @@ from planning.logic import (
     And,
     ConditionalEffect,
     ConjunctiveEffect,
+    ForallEffect,
     DelEffect,
     Fact,
     Not,
@@ -131,10 +132,14 @@ class Domain:
             Predicate(UPDATING, []),
             Predicate(INCOMPATIBLE_UPDATE, [])
         ]
+        forall_parameters = []
         for predicate in self.predicates:
             # e_addA and e_delA
             p_params = predicate.parameters
             f_params = p_params[0].elements
+            if len(f_params) > len(forall_parameters):
+                forall_parameters = f_params
+
 
             ins_a = INS + parse_name(predicate.name)
             del_a = DEL + parse_name(predicate.name)
@@ -174,6 +179,8 @@ class Domain:
             new_preds.append(Predicate(ins_a_closure, p_params))
 
         effects = ConjunctiveEffect(elements)
-        a.effect = effects
+        forall = ForallEffect(forall_parameters, effects)
+        # a.effect = effects
+        a.effect = forall
         self.actions.append(a)
         self.predicates.extend(new_preds)

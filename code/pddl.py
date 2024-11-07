@@ -6,8 +6,6 @@ from planning.problem import Problem
 from planning.logic import *
 from utils.functions import parse_name
 
-LINEW=80
-WS = 2
 
 SUPPORTED_FEATURES = [
     ":strips",
@@ -376,7 +374,7 @@ def parse_effect(tokens):
     return parse_c_effect(tokens)
 
 
-def parse_domain(content):
+def parse_domain(content, preserve_predicate_names=False):
     result = Domain()
     result.actions = []
     result.derived_predicates = []
@@ -406,7 +404,8 @@ def parse_domain(content):
             result.predicates = []
             while True:
                 name = tokens.next()
-                name = parse_name(name)
+                if not preserve_predicate_names:
+                    name = parse_name(name)
                 predicate = Predicate(name, parse_typed_list(tokens))
                 result.predicates.append(predicate)
                 assert not tokens.empty()
@@ -419,7 +418,8 @@ def parse_domain(content):
             # print("\n".join([repr(x) for x in result.functions]))
         elif t == ":derived":
             name = tokens.next()
-            name = parse_name(name)
+            if not preserve_predicate_names:
+                name = parse_name(name)
             p = Predicate(name, parse_typed_list(tokens))
             cond = simplify(parse_condition(tokens))
             assert tokens.get() == ')'

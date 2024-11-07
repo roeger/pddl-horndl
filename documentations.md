@@ -86,3 +86,12 @@ forall.x: (disarmed(x) or not(package(x)))
 * Complexity of planning:
     - 1 Step planning
     - Constant update action in the middle
+
+
+
+## Week 06/11:
+
+* Exists/Forall can't be used as effect:
+    - https://planning.wiki/ref/pddl/domain#effects
+
+

@@ -377,8 +377,8 @@ class Compilation:
                 if neg:
                     cond[-1] = pddl.Not(cond[-1])
             cond = pddl.And(cond)
-            # dnh: Do not add existential quantifiers for update predicates
-            if num_ext > 0 and not is_coherence_update_predicate_name(rule.head.name):
+            # dnh: Existential quantifiers are required for updating rules
+            if num_ext > 0:
                 cond = pddl.Exists(
                         get_parameter_list(num_ext, "?y%d"),
                         cond)
