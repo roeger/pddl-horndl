@@ -13,8 +13,8 @@ from coherence_update.rules.negative import atomicA_closure, roleP_closure
 
 class Timer:
     def __init__(self, message = None, end = "\n", file = sys.stderr, block = False):
-        if message:
-            print(message + "...", file = file, end="\n" if block else " ", flush=True)
+        # if message:
+        #     print("<"+ message + ">", file = file, end="", flush=True)
         self.message = message
         self.block = block
         self._t = None
@@ -24,7 +24,7 @@ class Timer:
         self._t = time.time()
     def __exit__(self, *args, **kwargs):
         elapsed = time.time() - self._t
-        print((self.message + " took " if self.block else "") + "%.4fs" % elapsed, end = self.end, file = self.file, flush=True)
+        print(self.message + ": " + "<time>%.6fs</time>" % elapsed, end = self.end, file = self.file, flush=True)
 
 
 TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tmp')
@@ -73,7 +73,7 @@ class UpdateRunner:
         with open(self.rls_file_path, 'w') as f:
             f.write(rls)
 
-        with Timer("Computing and writing TBox closure", block=True):
+        with Timer("tbox_closure", block=True):
             subprocess.call([self.nmo_path, self.rls_file_path, '--export', 'all', '--export-dir', TMP_DIR], stderr=subprocess.PIPE)
             try:
                 self.inclusions = read_predicates(TMP_DIR, INCLUSION_TYPES_ORDER)

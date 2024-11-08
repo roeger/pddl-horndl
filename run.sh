@@ -1,4 +1,4 @@
-task="cat"
+task="tripv2"
 ## cat: 6 25
 ## elevator: 15 34
 ## task(assign): 3 22
@@ -27,8 +27,8 @@ tseitin="code/tseitin.py"
 owl=$prefix/original/TTL.owl
 input_domain=$prefix/original/domain.pddl
 
-for i in `seq 6 25`;
-# for i in ${elements[@]};
+# for i in `seq 3 22`;
+for i in ${elements[@]};
 do
   input_problem="$prefix/original/${task}Problem${i}.pddl"
 
@@ -38,15 +38,14 @@ do
   tseitin_domain="benchmarks/outputs/$task/compiled_domain_${i}.pddl"
   tseitin_problem="benchmarks/outputs/$task/compiled_problem_${i}.pddl"
 
-  # run compilation
-  python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --debug -v $@
+  python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --debug -v $@ 2> "benchmarks/outputs/$task/compilations/time_${i}.txt"
 
   # run tseitin transformation
   python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" -v --keep-name $@
 
   echo "Solving problem $i"
   # timeout 600 $fastdownward $domain $problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])" > "benchmarks/outputs/$domain/solutions/solution${i}.txt" 2>&1
-  timeout 600 $fastdownward $tseitin_domain $tseitin_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])" > "benchmarks/outputs/$task/solutions/solution${i}.txt" 2>&1
+  timeout 600 $fastdownward $tseitin_domain $tseitin_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])" > "benchmarks/outputs/$task/solutions/log_${i}.txt" 2>&1
 done
 
 rm -rf __temp_clipper_*

@@ -1,0 +1,140 @@
+INFO     planner time limit: None
+INFO     planner memory limit: None
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /home/zinzin2312/miniconda3/bin/python3 /home/zinzin2312/repos/downward/builds/release/bin/translate/translate.py benchmarks/outputs/tripv2/compiled_domain_55.pddl benchmarks/outputs/tripv2/compiled_problem_55.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.010s CPU, 0.013s wall-clock]
+Normalizing task... [0.010s CPU, 0.001s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.002s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.010s CPU, 0.012s wall-clock]
+Preparing model... [0.000s CPU, 0.005s wall-clock]
+Generated 839 rules.
+Computing model... [3.670s CPU, 3.680s wall-clock]
+580385 relevant atoms
+20520 auxiliary atoms
+600905 final queue length
+2560896 total queue pushes
+Completing instantiation... [21.840s CPU, 21.859s wall-clock]
+Instantiating: [25.630s CPU, 25.648s wall-clock]
+Computing fact groups...
+Finding invariants...
+129 initial candidates
+Finding invariants: [0.100s CPU, 0.102s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.020s CPU, 0.001s wall-clock]
+Choosing groups...
+7378 uncovered facts
+Choosing groups: [0.000s CPU, 0.001s wall-clock]
+Building translation key... [0.010s CPU, 0.013s wall-clock]
+Computing fact groups: [0.160s CPU, 0.153s wall-clock]
+Building STRIPS to SAS dictionary... [0.010s CPU, 0.003s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.003s wall-clock]
+Building mutex information...
+Building mutex information: [0.000s CPU, 0.002s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.030s CPU, 0.027s wall-clock]
+Translator axioms removed by simplifying: 0
+Processing axioms: [1.410s CPU, 1.410s wall-clock]
+Translating task: [17.990s CPU, 17.999s wall-clock]
+773 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+0 axioms removed
+132 propositions removed
+Detecting unreachable propositions: [13.660s CPU, 13.665s wall-clock]
+Reordering and filtering variables...
+7309 of 7312 variables necessary.
+0 of 0 mutex groups necessary.
+561599 of 561599 operators necessary.
+11273 of 11275 axiom rules necessary.
+Reordering and filtering variables: [3.660s CPU, 3.659s wall-clock]
+Translator variables: 7309
+Translator derived variables: 5830
+Translator facts: 14618
+Translator goal facts: 2
+Translator mutex groups: 0
+Translator total mutex groups size: 0
+Translator operators: 561599
+Translator axioms: 11273
+Translator task size: 4810872
+Translator peak memory: 2977032 KB
+Writing output... [3.090s CPU, 3.090s wall-clock]
+Done! [65.060s CPU, 65.060s wall-clock]
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /home/zinzin2312/repos/downward/builds/release/bin/downward --evaluator 'hcea=cea()' --search 'lazy_greedy([hcea], preferred=[hcea])' --internal-plan-file sas_plan < output.sas
+[t=0.000072s, 9672 KB] reading input...
+[t=1.633066s, 209052 KB] done reading input!
+[t=1.661346s, 210708 KB] Initializing context-enhanced additive heuristic...
+[t=4.844603s, 492736 KB] Building successor generator...done!
+[t=5.042845s, 584248 KB] peak memory difference for successor generator creation: 91512 KB
+[t=5.043068s, 584248 KB] time for successor generation creation: 0.191522s
+[t=5.044971s, 584248 KB] Variables: 7309
+[t=5.045244s, 584248 KB] FactPairs: 14618
+[t=5.045514s, 584248 KB] Bytes per state: 916
+[t=5.045836s, 584248 KB] Conducting lazy best first search, (real) bound = 2147483647
+[t=5.321020s, 768260 KB] New best heuristic value for cea: 72
+[t=5.321107s, 768260 KB] g=0, 1 evaluated, 0 expanded
+[t=5.321154s, 768260 KB] Initial heuristic value for cea: 72
+[t=5.645550s, 800516 KB] New best heuristic value for cea: 36
+[t=5.645645s, 800516 KB] g=2, 3 evaluated, 2 expanded
+[t=6.396939s, 800516 KB] New best heuristic value for cea: 30
+[t=6.397035s, 800516 KB] g=4, 8 evaluated, 7 expanded
+[t=6.972872s, 800516 KB] New best heuristic value for cea: 24
+[t=6.972962s, 800516 KB] g=6, 12 evaluated, 11 expanded
+[t=7.547992s, 800516 KB] New best heuristic value for cea: 18
+[t=7.548086s, 800516 KB] g=8, 16 evaluated, 15 expanded
+[t=8.167920s, 800516 KB] New best heuristic value for cea: 12
+[t=8.168011s, 800516 KB] g=10, 20 evaluated, 19 expanded
+[t=8.588932s, 800516 KB] New best heuristic value for cea: 6
+[t=8.589009s, 800516 KB] g=12, 23 evaluated, 22 expanded
+[t=8.711269s, 800516 KB] New best heuristic value for cea: 2
+[t=8.711346s, 800516 KB] g=13, 24 evaluated, 23 expanded
+[t=8.711503s, 800516 KB] Solution found!
+[t=8.711536s, 800516 KB] Actual search time: 3.665682s
+vtatripmakerservice iswc_2007 iswc_2007 aa ab ac (1)
+update  (1)
+vtacarrentalservice iswc_2007 ac ac ad (1)
+update  (1)
+vtaflightservice iswc_2007 aa ad ae (1)
+update  (1)
+vtahotelservice iswc_2007 ab ae af (1)
+update  (1)
+vtacarhotelbundlingservice iswc_2007 af ad af ag (1)
+update  (1)
+vtashuttleservice ae iswc_2007 ag ah (1)
+update  (1)
+vtatripcombinationservice iswc_2007 ah ag ai aj ah (1)
+update  (1)
+[t=8.711555s, 800516 KB] Plan length: 14 step(s).
+[t=8.711555s, 800516 KB] Plan cost: 14
+[t=8.711555s, 800516 KB] Expanded 24 state(s).
+[t=8.711555s, 800516 KB] Reopened 0 state(s).
+[t=8.711555s, 800516 KB] Evaluated 25 state(s).
+[t=8.711555s, 800516 KB] Evaluations: 25
+[t=8.711555s, 800516 KB] Generated 50 state(s).
+[t=8.711555s, 800516 KB] Dead ends: 0 state(s).
+[t=8.711555s, 800516 KB] Number of registered states: 25
+[t=8.711555s, 800516 KB] Int hash set load factor: 25/32 = 0.781250
+[t=8.711555s, 800516 KB] Int hash set resizes: 5
+[t=8.711555s, 800516 KB] Search time: 3.665720s
+[t=8.711555s, 800516 KB] Total time: 8.711555s
+Solution found.
+Peak memory: 800516 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+INFO     Planner time: 74.39s

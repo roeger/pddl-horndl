@@ -1,0 +1,8 @@
+tbox_closure: <time>0.051723s</time>
+domain_extension: <time>0.000843s</time>
+collecting_queries: <time>0.000471s</time>
+rewriting: <time>0.349159s</time>
+construct_update_rules: <time>0.000768s</time>
+gen_derived_predicates: <time>0.009013s</time>
+finalizing: <time>0.002657s</time>
+compilation: <time>0.363074s</time>

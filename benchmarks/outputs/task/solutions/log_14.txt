@@ -1,0 +1,122 @@
+INFO     planner time limit: None
+INFO     planner memory limit: None
+
+INFO     Running translator.
+INFO     translator stdin: None
+INFO     translator time limit: None
+INFO     translator memory limit: None
+INFO     translator command line string: /home/zinzin2312/miniconda3/bin/python3 /home/zinzin2312/repos/downward/builds/release/bin/translate/translate.py benchmarks/outputs/task/compiled_domain_14.pddl benchmarks/outputs/task/compiled_problem_14.pddl --sas-file output.sas
+Parsing...
+Parsing: [0.020s CPU, 0.021s wall-clock]
+Normalizing task... [0.000s CPU, 0.003s wall-clock]
+Instantiating...
+Generating Datalog program... [0.000s CPU, 0.003s wall-clock]
+Normalizing Datalog program...
+Normalizing Datalog program: [0.020s CPU, 0.018s wall-clock]
+Preparing model... [0.010s CPU, 0.007s wall-clock]
+Generated 1408 rules.
+Computing model... [0.100s CPU, 0.103s wall-clock]
+32209 relevant atoms
+1685 auxiliary atoms
+33894 final queue length
+52209 total queue pushes
+Completing instantiation... [0.770s CPU, 0.770s wall-clock]
+Instantiating: [0.910s CPU, 0.905s wall-clock]
+Computing fact groups...
+Finding invariants...
+105 initial candidates
+Finding invariants: [0.000s CPU, 0.005s wall-clock]
+Checking invariant weight... [0.000s CPU, 0.000s wall-clock]
+Instantiating groups... [0.000s CPU, 0.000s wall-clock]
+Collecting mutex groups... [0.000s CPU, 0.001s wall-clock]
+Choosing groups...
+7020 uncovered facts
+Choosing groups: [0.000s CPU, 0.001s wall-clock]
+Building translation key... [0.010s CPU, 0.012s wall-clock]
+Computing fact groups: [0.050s CPU, 0.051s wall-clock]
+Building STRIPS to SAS dictionary... [0.000s CPU, 0.003s wall-clock]
+Building dictionary for full mutex groups... [0.000s CPU, 0.003s wall-clock]
+Building mutex information...
+Building mutex information: [0.030s CPU, 0.023s wall-clock]
+Translating task...
+Processing axioms...
+Simplifying axioms... [0.040s CPU, 0.040s wall-clock]
+Translator axioms removed by simplifying: 3416
+Processing axioms: [0.170s CPU, 0.173s wall-clock]
+Translating task: [0.390s CPU, 0.394s wall-clock]
+145 effect conditions simplified
+0 implied preconditions added
+Detecting unreachable propositions...
+0 operators removed
+20 axioms removed
+62 propositions removed
+Detecting unreachable propositions: [0.100s CPU, 0.101s wall-clock]
+Reordering and filtering variables...
+6974 of 6989 variables necessary.
+0 of 0 mutex groups necessary.
+141 of 141 operators necessary.
+21543 of 21555 axiom rules necessary.
+Reordering and filtering variables: [0.290s CPU, 0.286s wall-clock]
+Translator variables: 6974
+Translator derived variables: 6664
+Translator facts: 13948
+Translator goal facts: 2
+Translator mutex groups: 0
+Translator total mutex groups size: 0
+Translator operators: 141
+Translator axioms: 21543
+Translator task size: 64783
+Translator peak memory: 76200 KB
+Writing output... [0.050s CPU, 0.046s wall-clock]
+Done! [1.850s CPU, 1.850s wall-clock]
+translate exit code: 0
+
+INFO     Running search (release).
+INFO     search stdin: output.sas
+INFO     search time limit: None
+INFO     search memory limit: None
+INFO     search command line string: /home/zinzin2312/repos/downward/builds/release/bin/downward --evaluator 'hcea=cea()' --search 'lazy_greedy([hcea], preferred=[hcea])' --internal-plan-file sas_plan < output.sas
+[t=0.000076s, 9672 KB] reading input...
+[t=0.027986s, 18716 KB] done reading input!
+[t=0.062880s, 21036 KB] Initializing context-enhanced additive heuristic...
+[t=0.074495s, 28916 KB] Building successor generator...done!
+[t=0.074591s, 28916 KB] peak memory difference for successor generator creation: 0 KB
+[t=0.074616s, 28916 KB] time for successor generation creation: 0.000016s
+[t=0.074652s, 28916 KB] Variables: 6974
+[t=0.074681s, 28916 KB] FactPairs: 13948
+[t=0.074706s, 28916 KB] Bytes per state: 872
+[t=0.074760s, 28916 KB] Conducting lazy best first search, (real) bound = 2147483647
+[t=0.075104s, 28916 KB] New best heuristic value for cea: 6
+[t=0.075137s, 28916 KB] g=0, 1 evaluated, 0 expanded
+[t=0.075186s, 28916 KB] Initial heuristic value for cea: 6
+[t=0.075751s, 28916 KB] New best heuristic value for cea: 4
+[t=0.075794s, 28916 KB] g=1, 5 evaluated, 4 expanded
+[t=0.076015s, 28916 KB] New best heuristic value for cea: 3
+[t=0.076045s, 28916 KB] g=2, 6 evaluated, 5 expanded
+[t=0.076321s, 28916 KB] New best heuristic value for cea: 1
+[t=0.076350s, 28916 KB] g=3, 8 evaluated, 7 expanded
+[t=0.076453s, 28916 KB] Solution found!
+[t=0.076482s, 28916 KB] Actual search time: 0.001701s
+hireelectroniceng l (1)
+update  (1)
+hireelectroniceng b (1)
+update  (1)
+[t=0.076509s, 28916 KB] Plan length: 4 step(s).
+[t=0.076509s, 28916 KB] Plan cost: 4
+[t=0.076509s, 28916 KB] Expanded 8 state(s).
+[t=0.076509s, 28916 KB] Reopened 0 state(s).
+[t=0.076509s, 28916 KB] Evaluated 9 state(s).
+[t=0.076509s, 28916 KB] Evaluations: 9
+[t=0.076509s, 28916 KB] Generated 198 state(s).
+[t=0.076509s, 28916 KB] Dead ends: 0 state(s).
+[t=0.076509s, 28916 KB] Number of registered states: 9
+[t=0.076509s, 28916 KB] Int hash set load factor: 9/16 = 0.562500
+[t=0.076509s, 28916 KB] Int hash set resizes: 4
+[t=0.076509s, 28916 KB] Search time: 0.001750s
+[t=0.076509s, 28916 KB] Total time: 0.076509s
+Solution found.
+Peak memory: 28916 KB
+Remove intermediate file output.sas
+search exit code: 0
+
+INFO     Planner time: 1.98s

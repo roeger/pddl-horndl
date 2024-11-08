@@ -87,7 +87,8 @@ class Compilation:
                  filter_duplicates = True,
                  filter_unimportant_atoms = True,
                  expensive_duplicate_filtering = False,
-                 update_runner = None):
+                 update_runner = None,
+                 ):
         self.domain = domain
         self.problem = problem
         self.clipper = clipper
@@ -98,28 +99,28 @@ class Compilation:
         self.update_runner = update_runner
 
     def __call__(self):
-        with Timer("Compilation", block=True):
+        with Timer("compilation", block=True):
             if self.update_runner:
-                with Timer("Extending domain for coherence update"):
+                with Timer("domain_extension"):
                     self.domain.extend_for_coherence_update()
                     self.problem.extend_for_coherence_update()
-            with Timer("Collecting queries"):
+            with Timer("collecting_queries"):
                 self._collect_and_replace_ucqs()
-            with Timer("Rewriting"):
+            with Timer("rewriting"):
                 self._prepare_queries_for_rewriting()
                 self._rewrite_ontology_and_ucqs()
             if self.update_runner:
-                with Timer("Constructing and adding coherence update rules"):
+                with Timer("construct_update_rules"):
                     self._add_update_rules()
                     self._add_rules_for_missing_predicates()
-            with Timer("Generating derived predicated from datalog rules"):
+            with Timer("gen_derived_predicates"):
                 self._adapt_predicate_names_to_clipper()
                 self._collect_predicate_information()
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
                 self._compile_datalog_rules()
-            with Timer("Finalizing PDDL"):
+            with Timer("finalizing"):
                 self._unprime_conditions_and_enforce_consistency()
         print("")
 
@@ -494,8 +495,14 @@ if __name__ == "__main__":
     else:
         update_runner = None
 
-    compilation = Compilation(d, p, clipper, filter_unimportant_atoms = not args.no_filter_unimportant, expensive_duplicate_filtering = not args.no_expensive_filtering, update_runner=update_runner)
+    compilation = Compilation(
+        d, p, clipper,
+        filter_unimportant_atoms = not args.no_filter_unimportant,
+        expensive_duplicate_filtering = not args.no_expensive_filtering,
+        update_runner=update_runner
+    )
     compilation()
+
     d.constants = p.objects
     p.objects = None
     with open(args.out_domain, "w") as f:
