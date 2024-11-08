@@ -1,4 +1,4 @@
-task="tripv2"
+task="cat"
 ## cat: 6 25
 ## elevator: 15 34
 ## task(assign): 3 22
@@ -27,8 +27,8 @@ tseitin="code/tseitin.py"
 owl=$prefix/original/TTL.owl
 input_domain=$prefix/original/domain.pddl
 
-# for i in `seq 3 22`;
-for i in ${elements[@]};
+for i in `seq 6 25`;
+# for i in ${elements[@]};
 do
   input_problem="$prefix/original/${task}Problem${i}.pddl"
 

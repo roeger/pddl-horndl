@@ -338,13 +338,14 @@ class Compilation:
             predicate = pddl.Predicate(
                     primed_predicate_name,
                     [pddl.TypedList([subst[x] for x in rule.head.parameters])])
+            is_update_rule = is_coherence_update_predicate_name(rule.head.name)
             if not primed_predicate_name in self.predicates:
                 self.domain.predicates.append(predicate)
                 self.predicates.add(primed_predicate_name)
                 if rule.head.name in self.predicates \
                         and not rule.head.name.startswith(QUERY_PREDICATE_NAME) \
                         and rule.head.name != INCONSISTENCY_PREDICATE_NAME \
-                        and not is_coherence_update_predicate_name(rule.head.name):
+                        and not is_update_rule:
                     self.domain.derived_predicates.append(pddl.DerivedPredicate(
                         predicate,
                         pddl.Fact(rule.head.name, [subst[x] for x in rule.head.parameters])))
@@ -359,7 +360,7 @@ class Compilation:
                     t = t.element
                 if isinstance(t, datalog.Atom):
                     # dnh: Do not transform body if it's update predicates
-                    if self.update_runner and is_coherence_update_predicate_name(t.name):
+                    if self.update_runner and is_update_rule:
                         cond.append(pddl.Fact(
                             t.name,
                             [ subst[x] for x in t.parameters ]))

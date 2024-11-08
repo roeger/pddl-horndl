@@ -18,9 +18,9 @@ Preparing model... [0.010s CPU, 0.002s wall-clock]
 Generated 291 rules.
 Computing model... [0.000s CPU, 0.004s wall-clock]
 306 relevant atoms
-158 auxiliary atoms
-464 final queue length
-543 total queue pushes
+150 auxiliary atoms
+456 final queue length
+535 total queue pushes
 Completing instantiation... [0.010s CPU, 0.006s wall-clock]
 Instantiating: [0.020s CPU, 0.017s wall-clock]
 Computing fact groups...
@@ -50,13 +50,13 @@ Translating task: [0.000s CPU, 0.002s wall-clock]
 Detecting unreachable propositions...
 0 operators removed
 0 axioms removed
-14 propositions removed
-Detecting unreachable propositions: [0.000s CPU, 0.001s wall-clock]
+26 propositions removed
+Detecting unreachable propositions: [0.000s CPU, 0.000s wall-clock]
 Reordering and filtering variables...
-62 of 80 variables necessary.
+62 of 74 variables necessary.
 0 of 0 mutex groups necessary.
 5 of 5 operators necessary.
-69 of 93 axiom rules necessary.
+69 of 78 axiom rules necessary.
 Reordering and filtering variables: [0.000s CPU, 0.000s wall-clock]
 Translator variables: 62
 Translator derived variables: 45
@@ -67,7 +67,7 @@ Translator total mutex groups size: 0
 Translator operators: 5
 Translator axioms: 69
 Translator task size: 380
-Translator peak memory: 28612 KB
+Translator peak memory: 28608 KB
 Writing output... [0.000s CPU, 0.000s wall-clock]
 Done! [0.030s CPU, 0.028s wall-clock]
 translate exit code: 0
@@ -77,33 +77,33 @@ INFO     search stdin: output.sas
 INFO     search time limit: None
 INFO     search memory limit: None
 INFO     search command line string: /home/zinzin2312/repos/downward/builds/release/bin/downward --evaluator 'hcea=cea()' --search 'lazy_greedy([hcea], preferred=[hcea])' --internal-plan-file sas_plan < output.sas
-[t=0.000257s, 9672 KB] reading input...
-[t=0.000545s, 9672 KB] done reading input!
-[t=0.001577s, 9936 KB] Initializing context-enhanced additive heuristic...
+[t=0.000260s, 9672 KB] reading input...
+[t=0.000564s, 9672 KB] done reading input!
+[t=0.001589s, 9936 KB] Initializing context-enhanced additive heuristic...
 [t=0.001716s, 9936 KB] Building successor generator...done!
 [t=0.001765s, 9936 KB] peak memory difference for successor generator creation: 0 KB
 [t=0.001778s, 9936 KB] time for successor generation creation: 0.000005s
-[t=0.001792s, 9936 KB] Variables: 62
+[t=0.001791s, 9936 KB] Variables: 62
 [t=0.001805s, 9936 KB] FactPairs: 124
-[t=0.001827s, 9936 KB] Bytes per state: 8
-[t=0.001851s, 9936 KB] Conducting lazy best first search, (real) bound = 2147483647
-[t=0.001892s, 10068 KB] New best heuristic value for cea: 12
-[t=0.001910s, 10068 KB] g=0, 1 evaluated, 0 expanded
-[t=0.001926s, 10068 KB] Initial heuristic value for cea: 12
-[t=0.001949s, 10068 KB] New best heuristic value for cea: 10
-[t=0.001963s, 10068 KB] g=1, 2 evaluated, 1 expanded
-[t=0.001988s, 10068 KB] New best heuristic value for cea: 9
-[t=0.002003s, 10068 KB] g=2, 3 evaluated, 2 expanded
-[t=0.002041s, 10068 KB] New best heuristic value for cea: 6
-[t=0.002055s, 10068 KB] g=4, 7 evaluated, 6 expanded
-[t=0.002073s, 10068 KB] New best heuristic value for cea: 5
-[t=0.002087s, 10068 KB] g=5, 8 evaluated, 7 expanded
-[t=0.002108s, 10068 KB] New best heuristic value for cea: 3
-[t=0.002122s, 10068 KB] g=6, 9 evaluated, 8 expanded
-[t=0.002138s, 10068 KB] New best heuristic value for cea: 1
-[t=0.002151s, 10068 KB] g=7, 10 evaluated, 9 expanded
-[t=0.002167s, 10068 KB] Solution found!
-[t=0.002180s, 10068 KB] Actual search time: 0.000324s
+[t=0.001817s, 9936 KB] Bytes per state: 8
+[t=0.001840s, 9936 KB] Conducting lazy best first search, (real) bound = 2147483647
+[t=0.001882s, 10072 KB] New best heuristic value for cea: 12
+[t=0.001899s, 10072 KB] g=0, 1 evaluated, 0 expanded
+[t=0.001916s, 10072 KB] Initial heuristic value for cea: 12
+[t=0.001939s, 10072 KB] New best heuristic value for cea: 10
+[t=0.001953s, 10072 KB] g=1, 2 evaluated, 1 expanded
+[t=0.001978s, 10072 KB] New best heuristic value for cea: 9
+[t=0.001993s, 10072 KB] g=2, 3 evaluated, 2 expanded
+[t=0.002030s, 10072 KB] New best heuristic value for cea: 6
+[t=0.002044s, 10072 KB] g=4, 7 evaluated, 6 expanded
+[t=0.002086s, 10072 KB] New best heuristic value for cea: 5
+[t=0.002105s, 10072 KB] g=5, 8 evaluated, 7 expanded
+[t=0.002125s, 10072 KB] New best heuristic value for cea: 3
+[t=0.002139s, 10072 KB] g=6, 9 evaluated, 8 expanded
+[t=0.002156s, 10072 KB] New best heuristic value for cea: 1
+[t=0.002169s, 10072 KB] g=7, 10 evaluated, 9 expanded
+[t=0.002185s, 10072 KB] Solution found!
+[t=0.002199s, 10072 KB] Actual search time: 0.000353s
 dunk h i (1)
 update  (1)
 let_the_cats_out b a (1)
@@ -112,22 +112,22 @@ let_the_cats_out c l (1)
 update  (1)
 let_the_cats_out j f (1)
 update  (1)
-[t=0.002194s, 10068 KB] Plan length: 8 step(s).
-[t=0.002194s, 10068 KB] Plan cost: 8
-[t=0.002194s, 10068 KB] Expanded 10 state(s).
-[t=0.002194s, 10068 KB] Reopened 0 state(s).
-[t=0.002194s, 10068 KB] Evaluated 11 state(s).
-[t=0.002194s, 10068 KB] Evaluations: 11
-[t=0.002194s, 10068 KB] Generated 19 state(s).
-[t=0.002194s, 10068 KB] Dead ends: 0 state(s).
-[t=0.002194s, 10068 KB] Number of registered states: 11
-[t=0.002194s, 10068 KB] Int hash set load factor: 11/16 = 0.687500
-[t=0.002194s, 10068 KB] Int hash set resizes: 4
-[t=0.002194s, 10068 KB] Search time: 0.000344s
-[t=0.002194s, 10068 KB] Total time: 0.002194s
+[t=0.002213s, 10072 KB] Plan length: 8 step(s).
+[t=0.002213s, 10072 KB] Plan cost: 8
+[t=0.002213s, 10072 KB] Expanded 10 state(s).
+[t=0.002213s, 10072 KB] Reopened 0 state(s).
+[t=0.002213s, 10072 KB] Evaluated 11 state(s).
+[t=0.002213s, 10072 KB] Evaluations: 11
+[t=0.002213s, 10072 KB] Generated 22 state(s).
+[t=0.002213s, 10072 KB] Dead ends: 0 state(s).
+[t=0.002213s, 10072 KB] Number of registered states: 11
+[t=0.002213s, 10072 KB] Int hash set load factor: 11/16 = 0.687500
+[t=0.002213s, 10072 KB] Int hash set resizes: 4
+[t=0.002213s, 10072 KB] Search time: 0.000373s
+[t=0.002213s, 10072 KB] Total time: 0.002213s
 Solution found.
-Peak memory: 10068 KB
+Peak memory: 10072 KB
 Remove intermediate file output.sas
 search exit code: 0
 
-INFO     Planner time: 0.09s
+INFO     Planner time: 0.08s
