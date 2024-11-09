@@ -88,6 +88,7 @@ class Compilation:
                  filter_unimportant_atoms = True,
                  expensive_duplicate_filtering = False,
                  update_runner = None,
+                 timer_output = None
                  ):
         self.domain = domain
         self.problem = problem
@@ -97,30 +98,31 @@ class Compilation:
         self.filter_duplicates = filter_duplicates
         self.expensive_duplicate_filtering = expensive_duplicate_filtering
         self.update_runner = update_runner
+        self.timer_output = timer_output
 
     def __call__(self):
-        with Timer("compilation", block=True):
+        with Timer("compilation", block=True, file=self.timer_output):
             if self.update_runner:
-                with Timer("domain_extension"):
+                with Timer("domain_extension", file=self.timer_output):
                     self.domain.extend_for_coherence_update()
                     self.problem.extend_for_coherence_update()
-            with Timer("collecting_queries"):
+            with Timer("collecting_queries", file=self.timer_output):
                 self._collect_and_replace_ucqs()
-            with Timer("rewriting"):
+            with Timer("rewriting", file=self.timer_output):
                 self._prepare_queries_for_rewriting()
                 self._rewrite_ontology_and_ucqs()
             if self.update_runner:
-                with Timer("construct_update_rules"):
+                with Timer("construct_update_rules", file=self.timer_output):
                     self._add_update_rules()
                     self._add_rules_for_missing_predicates()
-            with Timer("gen_derived_predicates"):
+            with Timer("gen_derived_predicates", file=self.timer_output):
                 self._adapt_predicate_names_to_clipper()
                 self._collect_predicate_information()
                 self._create_datalog_rule_objects()
                 if self.filter_unimportant_atoms:
                     self._drop_irrelevant_datalog_rules()
                 self._compile_datalog_rules()
-            with Timer("finalizing"):
+            with Timer("finalizing", file=self.timer_output):
                 self._unprime_conditions_and_enforce_consistency()
         print("")
 
@@ -210,9 +212,6 @@ class Compilation:
     def _add_update_rules(self):
         rules = self.update_runner.run()
         self._datalog_rules.extend(rules)
-        # for rule in rules:
-        #     print(rule)
-        # breakpoint()
 
     def _add_rules_for_missing_predicates(self):
         # TODO(dnh): Leave unused predicates in domain and NOT in ontology untouch
@@ -231,9 +230,6 @@ class Compilation:
             else:
                 raise ValueError("Unexpected predicate arity: %d" % len(p.parameters))
         rules = self.update_runner.run_for_missing_predicates(concepts, roles)
-        # for rule in rules:
-        #     print(rule)
-        # breakpoint()
         self._datalog_rules.extend(rules)
 
     def _adapt_predicate_names_to_clipper(self):
@@ -466,8 +462,10 @@ if __name__ == "__main__":
     parser.add_argument("domain")
     parser.add_argument("problem")
 
-    parser.add_argument("--rls", default="t_closure.rls")
-    parser.add_argument("--nmo", default="nmo")
+    parser.add_argument("--rls", default="")
+    parser.add_argument("--nmo", default="")
+    parser.add_argument("--output-csv", default="results.csv")
+    parser.add_argument("--benchmark-name", default="test 1")
 
     parser.add_argument("--clipper-mqf", default=False, action="store_true", help="Use multiple-query feature of clipper.")
     parser.add_argument("--clipper", default="clipper.sh")
@@ -489,9 +487,17 @@ if __name__ == "__main__":
     with open(args.problem) as f:
         p = pddl.parse_problem(f.read())
 
-    do_coherence_update = args.rls and args.nmo
+    with open(args.output_csv, 'a') as f:
+        f.write(args.benchmark_name + ",")
+
+    do_coherence_update = args.rls != "" and args.nmo != ""
     if do_coherence_update:
-        update_runner = UpdateRunner(nmo_path=args.nmo, rls_file_path=args.rls, ontology_file_path=args.ontology)
+        update_runner = UpdateRunner(
+            nmo_path=args.nmo,
+            rls_file_path=args.rls,
+            ontology_file_path=args.ontology,
+            timer_output=args.output_csv
+        )
     else:
         update_runner = None
 
@@ -499,7 +505,8 @@ if __name__ == "__main__":
         d, p, clipper,
         filter_unimportant_atoms = not args.no_filter_unimportant,
         expensive_duplicate_filtering = not args.no_expensive_filtering,
-        update_runner=update_runner
+        update_runner=update_runner,
+        timer_output=args.output_csv
     )
     compilation()
 

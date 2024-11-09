@@ -27,9 +27,10 @@ class Clipper:
         with open(qf, "w") as f:
             f.write(queries)
             f.write("\n")
-        ret = subprocess.call(
-                [self.path, "rewrite", "-cq", qf, "-mqf", "-d", df, self.ontology_path],
-                stderr=subprocess.PIPE) # stdout=subprocess.PIPE
+        subprocess.call(
+                [self.path, "rewrite", "-cq", qf, "-mqf", "-d", df, self.ontology_path]
+                # , stderr=subprocess.PIPE
+        ) # stdout=subprocess.PIPE
         if not self.debug_mode:
             os.remove(qf)
         ontology = []
@@ -53,10 +54,11 @@ class Clipper:
     def rewrite_ontology(self):
         df = TEMPORARY_DATALOG_FILE.format(self.num_calls)
         self.num_calls += 1
-        ret = subprocess.call(
-                [self.path, "rewrite", "-d", df, "-o", self.ontology_path],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE)
+        subprocess.call(
+                [self.path, "rewrite", "-d", df, "-o", self.ontology_path]
+                # stderr=subprocess.PIPE,
+                # stdout=subprocess.PIPE
+        )
         ontology = []
         try:
             with open(df) as f:
@@ -81,9 +83,10 @@ class Clipper:
         with open(qf, "w") as f:
             f.write(cq)
             f.write("\n")
-        ret = subprocess.call(
-                [self.path, "rewrite", "-cq", qf, "-d", df, self.ontology_path],
-                stderr=subprocess.PIPE) # stdout=subprocess.PIPE
+        subprocess.call(
+                [self.path, "rewrite", "-cq", qf, "-d", df, self.ontology_path]
+                # , stderr=subprocess.PIPE
+        ) # stdout=subprocess.PIPE
         if not self.debug_mode:
             os.remove(qf)
         ontology = []

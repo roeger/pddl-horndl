@@ -3,6 +3,7 @@
 import argparse
 
 import pddl
+from update_runner import Timer
 
 AUX_PREDICATE_NAME = "AUX"
 
@@ -19,16 +20,17 @@ class Tseitin:
         self.problem = problem
 
     def __call__(self):
-        self._derived_predicates_count = 0
-        self._merged_derived_predicates = []
-        self._new_derived_predicates = []
-        # TODO: remove negation first, because that is not allowed in derived predicates
-        self._merge_derived_predicates()
-        self._create_shortcuts_conditions()
-        # self._split_derived_predicates()
-        # TODO: optimization: deal with isormophic subformulas -> only introduce one derived predicate per equivalence class?
-        self._replace_subformulas()
-        self.domain.derived_predicates.extend(self._new_derived_predicates)
+        with Timer("tseitin_transformation", file=args.output_csv):
+            self._derived_predicates_count = 0
+            self._merged_derived_predicates = []
+            self._new_derived_predicates = []
+            # TODO: remove negation first, because that is not allowed in derived predicates
+            self._merge_derived_predicates()
+            self._create_shortcuts_conditions()
+            # self._split_derived_predicates()
+            # TODO: optimization: deal with isormophic subformulas -> only introduce one derived predicate per equivalence class?
+            self._replace_subformulas()
+            self.domain.derived_predicates.extend(self._new_derived_predicates)
 
     def _merge_derived_predicates(self):
         # merge rules with the same head into single disjunctive rules
@@ -228,6 +230,9 @@ if __name__ == "__main__":
     p.add_argument("--out-problem", "-p", default="problem.pddl")
     p.add_argument("--verbose", "-v", default=False, action='store_true')
     p.add_argument("--keep-name", "-n", default=False, action='store_true')
+    p.add_argument("--output-csv", default="results.csv")
+    p.add_argument("--benchmark-name", default="test 1")
+
     args = p.parse_args()
     preserve_names = args.keep_name
     with open(args.domain) as f:

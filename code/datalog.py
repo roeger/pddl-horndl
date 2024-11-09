@@ -53,10 +53,6 @@ class Atom(__base):
     def __str__(self):
         return "%s(%s)" % (self.name, ",".join(self.parameters))
     def __eq__(self, other):
-        # if isinstance(other, Atom) and self.name == other.name:
-        #     if len(self.parameters) != len(other.parameters):
-        #         breakpoint()
-
         return isinstance(other, Atom) and self.name == other.name and all([self.parameters[i] == other.parameters[i] for i in range(len(self.parameters))])
     def __lt__(self, other):
         if other is None or isinstance(other, Falsity) or isinstance(other, Negated):

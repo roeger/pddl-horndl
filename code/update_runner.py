@@ -11,10 +11,12 @@ from utils.functions import get_repr
 from coherence_update.rules.atomic import build_del_concept_and_incompatible_rules_for_atomic_concepts, build_del_role_and_incompatible_rules_for_roles
 from coherence_update.rules.negative import atomicA_closure, roleP_closure
 
+TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tmp')
+RULES_FILE_NAME = '_update_rules.txt'
+
+
 class Timer:
-    def __init__(self, message = None, end = "\n", file = sys.stderr, block = False):
-        # if message:
-        #     print("<"+ message + ">", file = file, end="", flush=True)
+    def __init__(self, message = None, end = ",", file = "result.csv", block = False):
         self.message = message
         self.block = block
         self._t = None
@@ -24,14 +26,12 @@ class Timer:
         self._t = time.time()
     def __exit__(self, *args, **kwargs):
         elapsed = time.time() - self._t
-        print(self.message + ": " + "<time>%.6fs</time>" % elapsed, end = self.end, file = self.file, flush=True)
+        with open(self.file, 'a') as f:
+            f.write("%.6f" % elapsed + self.end)
 
-
-TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tmp')
-RULES_FILE_NAME = '_update_rules.txt'
 
 class UpdateRunner:
-    def __init__(self, nmo_path = "", rls_file_path = "", ontology_file_path="", write_to_file=False):
+    def __init__(self, nmo_path = "", rls_file_path = "", ontology_file_path="", write_to_file=False, timer_output="result.csv"):
         self.nmo_path = nmo_path
         self.rls_file_path = rls_file_path
         self.write_to_file = write_to_file
@@ -41,6 +41,7 @@ class UpdateRunner:
         self.a_atomics = None
         self.functs = None
         self.invFunct = None
+        self.timer_output = timer_output
         self.compute_t_closure()
 
     def run(self):
@@ -73,7 +74,7 @@ class UpdateRunner:
         with open(self.rls_file_path, 'w') as f:
             f.write(rls)
 
-        with Timer("tbox_closure", block=True):
+        with Timer("tbox_closure", block=True, file=self.timer_output):
             subprocess.call([self.nmo_path, self.rls_file_path, '--export', 'all', '--export-dir', TMP_DIR], stderr=subprocess.PIPE)
             try:
                 self.inclusions = read_predicates(TMP_DIR, INCLUSION_TYPES_ORDER)
