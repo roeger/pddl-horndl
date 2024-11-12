@@ -18,12 +18,18 @@ def read_names():
             if i == len(names) - 1:
                 f.write("]")
 
-def parse_planner_time(output):
+def parse_planner_time_and_memory(output):
     if re.search(r"Search stopped without finding a solution.", output):
-        return ""
+        return "", ""
+    match = re.search(r"Peak memory: (\d+) KB", output)
+    if match:
+        memory = match.group(1)
+    else:
+        match = ""
+
     last_line = output.split("\n")[-1]
     time = last_line.split(" ")[-1]
-    return time
+    return time, memory
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -32,6 +38,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     output = args.output
     output_csv = args.csv
-    time = parse_planner_time(output)
+    time, data = parse_planner_time_and_memory(output)
     with open(output_csv, "a") as f:
-        f.write(time + ",")
+        f.write(time + "," + data)

@@ -1,15 +1,15 @@
 tasks=(cat elevator task order trip tripv2)
 # tasks=(cat elevator)
-doupdate=0
+doupdate=1
 
 if [ $doupdate -eq 1 ]; then
   csv="results_update.csv"
   rm -rf $csv
-  echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation,tseitin transformation, solution" >> $csv
+  echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation,tseitin transformation, solution, size" >> $csv
 else
   csv="results.csv"
   rm -rf $csv
-  echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation,tseitin transformation, solution" >> $csv
+  echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation,tseitin transformation, solution, size" >> $csv
 fi
 
 for task in ${tasks[@]};
@@ -72,8 +72,9 @@ do
       python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
 
       echo "Solving problem $i"
-      # timeout 600 $fastdownward $domain $problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])" > "benchmarks/outputs/$domain/solutions/solution${i}.txt" 2>&1
-      planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])">&1)
+      # planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])">&1)
+      planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
+
       python helpers.py --output "$planner_output" --csv "$csv"
 
       echo "" >> $csv
