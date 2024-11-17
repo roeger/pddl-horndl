@@ -18,10 +18,10 @@
           (package ?x0))
 (:derived (DATALOG_PACKAGE ?x0 - object)
           (exists (?y0 - object) (contains ?x0 ?y0)))
-(:derived (DATALOG_QUERY0 ?x0 ?x1 - object)
-          (and (bomb ?x1) (contains ?x0 ?x1)))
 (:derived (DATALOG_INCONSISTENT )
           (exists (?y0 - object) (and (bomb ?y0) (cat ?y0))))
+(:derived (DATALOG_QUERY0 ?x0 ?x1 - object)
+          (and (bomb ?x1) (contains ?x0 ?x1)))
 (:derived (DATALOG_QUERY1 ?x0 ?x1 - object)
           (and (cat ?x1) (contains ?x0 ?x1)))
 (:action dunk

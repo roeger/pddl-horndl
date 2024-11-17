@@ -13,7 +13,7 @@
   (DATALOG_QUERY1 ?x0 ?x1 - object)
   (DATALOG_QUERY0 ?x0 ?x1 - object))
 (:derived (DATALOG_INCONSISTENT )
-          (exists (?y0 ?y1 ?y2 - object) (and (contains ?y0 ?y1) (contains ?y0 ?y2) (not (= ?y1 ?y2)))))
+          (exists (?y0 - object) (and (bomb ?y0) (cat ?y0))))
 (:derived (DATALOG_PACKAGE ?x0 - object)
           (package ?x0))
 (:derived (DATALOG_PACKAGE ?x0 - object)
@@ -23,7 +23,7 @@
 (:derived (DATALOG_QUERY0 ?x0 ?x1 - object)
           (and (bomb ?x1) (contains ?x0 ?x1)))
 (:derived (DATALOG_INCONSISTENT )
-          (exists (?y0 - object) (and (bomb ?y0) (cat ?y0))))
+          (exists (?y0 ?y1 ?y2 - object) (and (contains ?y0 ?y1) (contains ?y0 ?y2) (not (= ?y1 ?y2)))))
 (:action dunk
   :parameters (?x ?y - object)
   :precondition (and (DATALOG_PACKAGE ?x) (not (DATALOG_INCONSISTENT)))
