@@ -19,8 +19,10 @@ def read_names():
                 f.write("]")
 
 def parse_planner_time_and_memory(output):
+    pre = ""
     if re.search(r"Search stopped without finding a solution.", output):
-        return "", ""
+        pre = "No solution: "
+
     match = re.search(r"Peak memory: (\d+) KB", output)
     if match:
         memory = match.group(1)
@@ -29,7 +31,7 @@ def parse_planner_time_and_memory(output):
 
     last_line = output.split("\n")[-1]
     time = last_line.split(" ")[-1]
-    return time, memory
+    return pre + time, memory
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

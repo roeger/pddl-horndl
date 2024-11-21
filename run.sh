@@ -1,15 +1,25 @@
 do_update=1
 keep_pddl=1
+do_tseitin=0
 mode="cea"
 
+
 if [ $do_update -eq 1 ]; then
-  csv="results_update.csv"
+  csv="csvs/results_update.csv"
   rm -rf $csv
-  echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
+  if [ $do_tseitin -eq 1 ]; then
+    echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
+  else
+    echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation, solution, size(KB)" >> $csv
+  fi
 else
-  csv="results.csv"
+  csv="csvs/results.csv"
   rm -rf $csv
-  echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
+  if [ $do_tseitin -eq 1 ]; then
+    echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
+  else
+    echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation, solution, size(KB)" >> $csv
+  fi
 fi
 
 tasks=(cat elevator robot task order trip tripv2)
@@ -55,8 +65,14 @@ do
       # echo "Compiling dom & prob $i with update"
       python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --output-csv "$csv" --benchmark-name "$task $i"$@
 
-      # echo "Tseitin transformation $i"
-      python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name  --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+      if [ $do_tseitin -eq 1 ]; then
+        python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name  --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+        output_domain="$tseitin_domain"
+        output_problem="$tseitin_problem"
+      else
+        output_domain="$result_domain"
+        output_problem="$result_problem"
+      fi
     else
       result_domain="$prefix/pddl/domain_${i}.pddl"
       result_problem="$prefix/pddl/problem_${i}.pddl"
@@ -66,19 +82,25 @@ do
       # echo "Compiling dom & prob $i"
       python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --output-csv "$csv" --benchmark-name "$task $i"$@
 
-      # echo "Tseitin transformation $i"
-      python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+      if [ $do_tseitin -eq 1 ]; then
+        python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+        output_domain="$tseitin_domain"
+        output_problem="$tseitin_problem"
+      else
+        output_domain="$result_domain"
+        output_problem="$result_problem"
+      fi
     fi
 
-    echo "========================== Solving $task $i with $mode heuristic =========================="
+    echo "========================== Solving $task $i with $mode heuristic; do_update=$do_update; do_tseitin=$do_tseitin; keep_pddl=$keep_pddl =========================="
     if [ $mode == "cea" ]; then
-      planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
-      # planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])">&1)
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
+      # planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])">&1)
     elif [ $mode == "ff" ]; then
-      planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
     else
       # Default
-      planner_output=$(timeout 600 $fastdownward $tseitin_domain $tseitin_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
     fi
 
     python helpers.py --output "$planner_output" --csv "$csv"
