@@ -1,20 +1,18 @@
 do_update=1
 keep_pddl=1
 do_tseitin=0
-mode="cea"
+mode="cea_negative"
+# supported: cea/cea_negative/ff
 
-
+csv="csvs/update${do_update}_tseitin${do_tseitin}_${mode}.csv"
+rm -rf $csv
 if [ $do_update -eq 1 ]; then
-  csv="csvs/results_update.csv"
-  rm -rf $csv
   if [ $do_tseitin -eq 1 ]; then
     echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
   else
     echo "benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation, solution, size(KB)" >> $csv
   fi
 else
-  csv="csvs/results.csv"
-  rm -rf $csv
   if [ $do_tseitin -eq 1 ]; then
     echo "benchmark name,collecting queries,rewriting,gen derived preds,finalize,total complation,tseitin transformation, solution, size(KB)" >> $csv
   else
@@ -93,14 +91,16 @@ do
     fi
 
     echo "========================== Solving $task $i with $mode heuristic; do_update=$do_update; do_tseitin=$do_tseitin; keep_pddl=$keep_pddl =========================="
+
     if [ $mode == "cea" ]; then
-      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
-      # planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --evaluator "hcea=cea()" --search "lazy_greedy([hcea], preferred=[hcea])">&1)
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
     elif [ $mode == "ff" ]; then
-      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
-    else
-      # Default
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(),lazy_greedy([hff],preferred=[hff]))">&1)
+      # planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
+    elif [ $mode == "cea_negative" ]; then
       planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
+    else
+      planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
     fi
 
     python helpers.py --output "$planner_output" --csv "$csv"
