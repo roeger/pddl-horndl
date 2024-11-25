@@ -1,0 +1,3 @@
+@import TRIPLE :- turtle{resource="/home/zinzin2312/repos/pddl-horndl/benchmarks/robot/original/TTL22.owl"} .
+
+fact(?X,?Y,?Z) :- TRIPLE(?X ,?Y ,?Z) .

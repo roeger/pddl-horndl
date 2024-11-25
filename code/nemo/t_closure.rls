@@ -3,7 +3,6 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-% /home/zinzin2312/repos/coherence_ppdl/benchmarks/ontologies/cats/cats.ttl
 % START DATAIMPORT
 @import TRIPLE :- turtle{resource="::DATA_IMPORT_PATH"} .
 % END DATAIMPORT
