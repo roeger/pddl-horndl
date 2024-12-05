@@ -3,6 +3,8 @@ RULE_SEPARATOR = " :- "
 WORD_SEPARATOR = "_"
 
 INCOMPATIBLE_UPDATE = "incompatible" + WORD_SEPARATOR + "update"
+COMPATIBLE_UPDATE = "compatible" + WORD_SEPARATOR + "update"
+UPDATE_AUX = "update" + WORD_SEPARATOR + "aux"
 ACTION_UPDATE_NAME = "update"
 UPDATING = "updating"
 INS = "ins" + WORD_SEPARATOR

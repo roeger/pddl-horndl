@@ -1,7 +1,7 @@
-keep_pddl=1
+keep_pddl=0
 updates=(1)
 tseitins=(0)
-mode="cea"
+mode="cea_negative"
 # supported: cea/cea_negative/ff
 
 for do_update in ${updates[@]};
@@ -25,7 +25,7 @@ do
     fi
 
     # tasks=(cat elevator task order trip tripv2 robot)
-    tasks=(trip tripv2)
+    tasks=(cat)
     for task in ${tasks[@]};
     do
       if [ $task == "cat" ]; then
@@ -65,34 +65,34 @@ do
           tseitin_domain="benchmarks/outputs/$task/compiled_domain_${i}.pddl"
           tseitin_problem="benchmarks/outputs/$task/compiled_problem_${i}.pddl"
 
-        # echo "Compiling dom & prob $i with update"
-        python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --output-csv "$csv" --benchmark-name "$task $i"$@
+          # echo "Compiling dom & prob $i with update"
+          python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --rls "$rls" --nmo "$nmo" --output-csv "$csv" --benchmark-name "$task $i"$@
 
-        if [ $do_tseitin -eq 1 ]; then
-          python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name  --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
-          output_domain="$tseitin_domain"
-          output_problem="$tseitin_problem"
+          if [ $do_tseitin -eq 1 ]; then
+            python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name  --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+            output_domain="$tseitin_domain"
+            output_problem="$tseitin_problem"
+          else
+            output_domain="$result_domain"
+            output_problem="$result_problem"
+          fi
         else
-          output_domain="$result_domain"
-          output_problem="$result_problem"
-        fi
-      else
-        result_domain="$prefix/pddl/domain_${i}.pddl"
-        result_problem="$prefix/pddl/problem_${i}.pddl"
-        tseitin_domain="$prefix/pddl/compiled_domain_${i}.pddl"
-        tseitin_problem="$prefix/pddl/compiled_problem_${i}.pddl"
+          result_domain="$prefix/pddl/domain_${i}.pddl"
+          result_problem="$prefix/pddl/problem_${i}.pddl"
+          tseitin_domain="$prefix/pddl/compiled_domain_${i}.pddl"
+          tseitin_problem="$prefix/pddl/compiled_problem_${i}.pddl"
 
-        # echo "Compiling dom & prob $i"
-        python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --output-csv "$csv" --benchmark-name "$task $i"$@
+          # echo "Compiling dom & prob $i"
+          python3 "$compiler" "$owl" "$input_domain" "$input_problem" -d "$result_domain" -p "$result_problem" --clipper "$clipper" --clipper-mqf  --output-csv "$csv" --benchmark-name "$task $i"$@
 
-        if [ $do_tseitin -eq 1 ]; then
-          python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
-          output_domain="$tseitin_domain"
-          output_problem="$tseitin_problem"
-        else
-          output_domain="$result_domain"
-          output_problem="$result_problem"
-        fi
+          if [ $do_tseitin -eq 1 ]; then
+            python3 "$tseitin" "$result_domain" "$result_problem" -d "$tseitin_domain" -p "$tseitin_problem" --keep-name --output-csv "$csv" --benchmark-name "$task $i"$@
+            output_domain="$tseitin_domain"
+            output_problem="$tseitin_problem"
+          else
+            output_domain="$result_domain"
+            output_problem="$result_problem"
+          fi
         fi
 
         echo "========================== Solving $task $i with $mode heuristic; do_update=$do_update; do_tseitin=$do_tseitin; keep_pddl=$keep_pddl =========================="
@@ -101,7 +101,6 @@ do
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
         elif [ $mode == "ff" ]; then
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(),lazy_greedy([hff],preferred=[hff]))">&1)
-          # planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
         elif [ $mode == "cea_negative" ]; then
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
         else

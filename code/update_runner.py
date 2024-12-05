@@ -2,6 +2,7 @@ import os
 import re
 import time
 import subprocess
+from datalog import Rule, Atom, Negated
 from utils.functions import read_predicates, read_unary_predicate
 from coherence_update.classes.tbox import TBox
 from coherence_update.classes.inclusion import INCLUSION_TYPES_ORDER
@@ -9,6 +10,7 @@ from coherence_update.update import CohrenceUpdate
 from utils.functions import get_repr
 from coherence_update.rules.atomic import build_del_concept_and_incompatible_rules_for_atomic_concepts, build_del_role_and_incompatible_rules_for_roles
 from coherence_update.rules.negative import atomicA_closure, roleP_closure
+from coherence_update.rules.symbols import COMPATIBLE_UPDATE, INCOMPATIBLE_UPDATE, UPDATE_AUX
 
 TMP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tmp')
 RULES_FILE_NAME = '_update_rules.txt'
@@ -94,6 +96,37 @@ class UpdateRunner:
     def atomic_predicates(self):
         atomic = self.a_atomics + self.roles + self.functs + self.invFunct
         return set([get_repr(uri) for uri in atomic])
+
+
+class Transformer:
+    def __init__(self, rules):
+        self.rules = rules
+
+    def __call__(self):
+        new_rules = []
+        new_predicates = []
+        # Add aux rules for compatible_update
+        for rule in self.rules:
+            if rule.head.name == INCOMPATIBLE_UPDATE:
+                suffix = len(new_predicates) + 1
+                aux_name = UPDATE_AUX + str(suffix)
+                r = Rule()
+                params = []
+                r.head = Atom(aux_name, params)
+                r.tail = rule.tail
+                new_rules.append(r)
+                new_predicates.append(aux_name)
+            else:
+                new_rules.append(rule)
+        # Construct compatible update
+        compatible_update = Rule()
+        compatible_update.head = Atom(COMPATIBLE_UPDATE, [])
+        compatible_update.tail = [Negated(Atom(aux, [])) for aux in new_predicates]
+        new_rules.append(compatible_update)
+        new_predicates.append(COMPATIBLE_UPDATE)
+
+        return new_rules
+
 
 if __name__ == '__main__':
     runner = UpdateRunner()

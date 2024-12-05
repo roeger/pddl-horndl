@@ -5,10 +5,10 @@ import shutil
 import sys
 
 from clipper import Clipper
-from coherence_update.rules.symbols import DEL, INCOMPATIBLE_UPDATE, INS, UPDATING
+from coherence_update.rules.symbols import DEL, INCOMPATIBLE_UPDATE, INS, UPDATING, COMPATIBLE_UPDATE, UPDATE_AUX
 import datalog
 import pddl
-from update_runner import Timer, UpdateRunner
+from update_runner import Timer, UpdateRunner, Transformer
 from utils.functions import parse_name
 
 QUERY_PREDICATE_NAME = "QUERY"
@@ -18,10 +18,10 @@ def is_primed_predicate_name(name):
     return name.startswith("DATALOG_")
 
 def is_update_predicate_name(name):
-    return name == UPDATING or name == INCOMPATIBLE_UPDATE
+    return name == UPDATING or name == INCOMPATIBLE_UPDATE or name == COMPATIBLE_UPDATE
 
 def is_coherence_update_predicate_name(name):
-    return name.startswith(INS) or name.startswith(DEL) or is_update_predicate_name(name)
+    return name.startswith(INS) or name.startswith(DEL) or is_update_predicate_name(name) or name.startswith(UPDATE_AUX)
 
 def prime_predicate_name(original):
     return "DATALOG_%s" % original.upper()
@@ -257,7 +257,7 @@ class Compilation:
         self._duplicate_rules = set()
         self._unimportant_rules = []
         inconsistent_atom = datalog.Atom(INCONSISTENCY_PREDICATE_NAME, [])
-        for idx, dlr in enumerate(datalog_rules):
+        for dlr in datalog_rules:
             if len(dlr.strip()) == 0:
                 continue
             rule = datalog.parse_rule(dlr)
@@ -275,6 +275,11 @@ class Compilation:
                     self._duplicate_rules.add(rule)
             else:
                 self._datalog_rules.append(rule)
+
+        if self.update_runner:
+            transformer = Transformer(self._datalog_rules)
+            self._datalog_rules = transformer()
+
         if self.filter_duplicates:
             self._datalog_rules = list(self._datalog_rules)
 
