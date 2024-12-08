@@ -1,6 +1,6 @@
 keep_pddl=0
 updates=(1)
-tseitins=(0)
+tseitins=(1)
 mode="cea_negative"
 # supported: cea/cea_negative/ff
 
@@ -24,18 +24,18 @@ do
       fi
     fi
 
-    # tasks=(cat elevator task order trip tripv2 robot)
-    tasks=(cat)
+    tasks=(cat elevator task order trip tripv2 robot)
+    # tasks=(cat)
     for task in ${tasks[@]};
     do
       if [ $task == "cat" ]; then
-        elements=(6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25)
+        elements=(17)
       elif [ $task == "elevator" ]; then
-        elements=(15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34)
+        elements=(22)
       elif [ $task == "robot" ] || [ $task == "task" ]; then
-        elements=(3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22)
+        elements=(15)
       else # order, trip, tripv2
-        elements=(4 5 6 7 10 15 20 25 30 35 40 45 50 55 60)
+        elements=(15 5 10)
       fi
 
       prefix="benchmarks/$task"
