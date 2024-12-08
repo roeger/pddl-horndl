@@ -369,7 +369,10 @@ class Forall(LogicBaseClass):
         else:
             return Forall(new_parameters, f)
     def free_vars(self):
-        myvars = set([x for y in self.parameters for x in y.elements])
+        try:
+            myvars = set([x for y in self.parameters for x in y.elements])
+        except:
+            breakpoint()
         return self.formula.free_vars() - myvars
     def _apply_recursively(self, typ, func):
         return Forall(self.parameters, self.formula.apply(typ, func))

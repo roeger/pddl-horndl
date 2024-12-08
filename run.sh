@@ -1,4 +1,4 @@
-keep_pddl=0
+keep_pddl=1
 updates=(1)
 tseitins=(0)
 mode="cea_negative"
