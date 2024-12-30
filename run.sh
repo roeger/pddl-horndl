@@ -1,8 +1,8 @@
 keep_pddl=1
 updates=(1)
 tseitins=(0)
-mode="cea"
-# supported: cea/cea_negative/ff
+mode="ff_negative"
+# supported: cea/cea_negative/ff/ff_negative
 
 for do_update in ${updates[@]};
 do
@@ -24,11 +24,11 @@ do
       fi
     fi
 
-    # tasks=(cat elevator task order trip tripv2 robot)
-    tasks=(trip tripv2)
+    # tasks=(cat elevator task order trip tripv2 robot catOG)
+    tasks=(catOG)
     for task in ${tasks[@]};
     do
-      if [ $task == "cat" ]; then
+      if [ $task == "cat" ] || [ $task == "catOG" ]; then
         elements=(6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25)
       elif [ $task == "elevator" ]; then
         elements=(15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34)
@@ -101,9 +101,10 @@ do
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
         elif [ $mode == "ff" ]; then
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(),lazy_greedy([hff],preferred=[hff]))">&1)
-          # planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --heuristic "hff=ff(transform=adapt_costs(one))" --search "iterated([ehc(hff, preferred=[hff]), eager_greedy([hff], preferred=[hff])], continue_on_fail=true, continue_on_solve=false)">&1)
         elif [ $mode == "cea_negative" ]; then
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
+        elif [ $mode == "ff_negative" ]; then
+          planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(axioms=approximate_negative),lazy_greedy([hff],preferred=[hff]))">&1)
         else
           planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
         fi
