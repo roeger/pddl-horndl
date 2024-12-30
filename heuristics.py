@@ -5,7 +5,7 @@ def variable_definition(variable, args):
     return f"{variable}({args})"
 
 def expression(variable):
-    return f"lazy_greedy([{variable_name(variable)}],preferred=[{variable_name(variable)}])"
+    return f"eager_greedy([{variable_name(variable)}],preferred=[{variable_name(variable)}])"
 
 def build_arguments(heuristic):
     var = variable_name(heuristic["variable"])
@@ -29,13 +29,23 @@ heuristics = [
     {"variable": "cea", "args": "", "name": "cea"},
     {"variable": "cea", "args": "axioms=approximate_negative", "name": "cea_approximate_negative"},
     {"variable": "ff", "args": "", "name": "hff"},
+    {"variable": "ff", "args": "axioms=approximate_negative", "name": "hff_approximate_negative"},
     {"variable": "cg", "args": "", "name": "cg"},
-    # {"variable": "landmark_cost_partitioning", "args": "lm_rhw()", "name": "lm_rhw"},
-    # {"variable": "landmark_cost_partitioning", "args": "lm_zg()", "name": "lm_zg"},
+    {"variable": "cg", "args": "axioms=approximate_negative", "name": "cg_approximate_negative"},
 ]
 
-pddl = [("cat",17), ("elevator", 22), ("task", 15), ("order", 15), ("trip", 5), ("tripv2", 10)]
-# ("robot", 9)
+pddl = [
+    ("cat",17),
+    ("elevator",22),
+    ("task", 15),
+    ("order", 5), ("order", 10), ("order", 15),
+    ("trip", 5), ("trip", 10), ("trip", 15),
+    ("tripv2",5), ("tripv2",10),("tripv2", 15),
+    ("robot", 10), ("robot", 11), ("robot", 12),
+    ("catOG", 17)
+]
+
+# pddl = [("catOG", 17)]
 
 if __name__ == "__main__":
     import os
@@ -43,26 +53,49 @@ if __name__ == "__main__":
     fastdownward="/home/zinzin2312/repos/downward/fast-downward.py"
     file="csvs/heuristics_test.csv"
 
+    timeouts = []
+
     for h in heuristics:
         arg = build_arguments(h)
-        for tsk in pddl:
-            task, nr = tsk[0], tsk[1]
+        for i in range(3):
+            for tsk in pddl:
+                task, nr = tsk[0], tsk[1]
+                dom = result_domain(task, nr)
+                prob = result_problem(task, nr)
+                start = time.time()
+                command = f"timeout 50 {fastdownward} {dom} {prob} --search {arg}"
+                if command in timeouts:
+                    with open(file, 'a') as f:
+                        f.write(f"{h['name']},{dom},50\n")
+                    continue
 
-            dom = result_domain(task, nr)
-            prob = result_problem(task, nr)
-            start = time.time()
-            command = f"timeout 20 {fastdownward} {dom} {prob} --search {arg}"
-            os.system(command)
-            end = time.time()
-            elapsed = end - start
-            with open(file, 'a') as f:
-                f.write(f"{h['name']},{dom},{elapsed}\n")
+                os.system(command)
+                end = time.time()
+                elapsed = end - start
+                elapsed = round(elapsed, 2)
+                if elapsed >= 50:
+                    timeouts.append(command)
+                with open(file, 'a') as f:
+                    f.write(f"{h['name']},{dom},{elapsed}\n")
 
-            com_d = compiled_domain(task, nr)
-            com_p = compiled_problem(task, nr)
-            start = time.time()
-            os.system(f"timeout 20 {fastdownward} {com_d} {com_p} --search '{arg}'")
-            end = time.time()
-            elapsed = end - start
-            with open(file, 'a') as f:
-                f.write(f"{h['name']},{com_d},{elapsed}\n")
+        for i in range(3):
+            for tsk in pddl:
+                task, nr = tsk[0], tsk[1]
+                com_d = compiled_domain(task, nr)
+                com_p = compiled_problem(task, nr)
+                start = time.time()
+                command = f"timeout 50 {fastdownward} {com_d} {com_p} --search '{arg}'"
+                if command in timeouts:
+                    # write timeout
+                    with open(file, 'a') as f:
+                        f.write(f"{h['name']},{com_d},50\n")
+                    continue
+
+                os.system(command)
+                end = time.time()
+                elapsed = end - start
+                elapsed = round(elapsed, 2)
+                if elapsed >= 50:
+                    timeouts.append(command)
+                with open(file, 'a') as f:
+                    f.write(f"{h['name']},{com_d},{elapsed}\n")

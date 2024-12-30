@@ -24,18 +24,20 @@ do
       fi
     fi
 
-    tasks=(cat elevator task order trip tripv2 robot)
+    tasks=(cat elevator task order trip tripv2 robot catOG)
     # tasks=(cat)
     for task in ${tasks[@]};
     do
-      if [ $task == "cat" ]; then
+      if [ $task == "cat" ] || [ $task == "catOG" ]; then
         elements=(17)
+      elif [ $task == "task" ]; then
+        elements=(15)
       elif [ $task == "elevator" ]; then
         elements=(22)
-      elif [ $task == "robot" ] || [ $task == "task" ]; then
-        elements=(15)
+      elif [ $task == "robot" ]; then
+        elements=(10 11 12)
       else # order, trip, tripv2
-        elements=(15 5 10)
+        elements=(5 10 15)
       fi
 
       prefix="benchmarks/$task"
@@ -95,27 +97,27 @@ do
           fi
         fi
 
-        echo "========================== Solving $task $i with $mode heuristic; do_update=$do_update; do_tseitin=$do_tseitin; keep_pddl=$keep_pddl =========================="
-
-        if [ $mode == "cea" ]; then
-          planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
-        elif [ $mode == "ff" ]; then
-          planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(),lazy_greedy([hff],preferred=[hff]))">&1)
-        elif [ $mode == "cea_negative" ]; then
-          planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
-        else
-          planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
-        fi
-        python helpers.py --output "$planner_output" --csv "$csv"
-
-        echo "" >> $csv
-
-        if [ $keep_pddl -eq 0 ]; then
-          rm -rf $result_domain
-          rm -rf $result_problem
-          rm -rf $tseitin_domain
-          rm -rf $tseitin_problem
-        fi
+        # echo "========================== Solving $task $i with $mode heuristic; do_update=$do_update; do_tseitin=$do_tseitin; keep_pddl=$keep_pddl =========================="
+        #
+        # if [ $mode == "cea" ]; then
+        #   planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
+        # elif [ $mode == "ff" ]; then
+        #   planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hff,ff(),lazy_greedy([hff],preferred=[hff]))">&1)
+        # elif [ $mode == "cea_negative" ]; then
+        #   planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(axioms=approximate_negative),lazy_greedy([hcea],preferred=[hcea]))">&1)
+        # else
+        #   planner_output=$(timeout 600 $fastdownward $output_domain $output_problem --search "let(hcea,cea(),lazy_greedy([hcea],preferred=[hcea]))">&1)
+        # fi
+        # python helpers.py --output "$planner_output" --csv "$csv"
+        #
+        # echo "" >> $csv
+        #
+        # if [ $keep_pddl -eq 0 ]; then
+        #   rm -rf $result_domain
+        #   rm -rf $result_problem
+        #   rm -rf $tseitin_domain
+        #   rm -rf $tseitin_problem
+        # fi
       done
     done
   done
