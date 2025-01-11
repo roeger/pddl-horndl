@@ -1,7 +1,7 @@
 keep_pddl=1
 updates=(1)
 tseitins=(0)
-mode="ff_negative"
+mode="cea_negative"
 # supported: cea/cea_negative/ff/ff_negative
 
 for do_update in ${updates[@]};
@@ -24,8 +24,8 @@ do
       fi
     fi
 
-    # tasks=(cat elevator task order trip tripv2 robot catOG)
-    tasks=(catOG)
+    tasks=(cat catOG elevator task order trip tripv2 robot catOG)
+    # tasks=(catOG)
     for task in ${tasks[@]};
     do
       if [ $task == "cat" ] || [ $task == "catOG" ]; then

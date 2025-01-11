@@ -26,17 +26,22 @@ def compiled_problem(task, i):
     return f"benchmarks/outputs/{task}/compiled_problem_{i}.pddl"
 
 heuristics = [
-    {"variable": "cea", "args": "", "name": "cea"},
+    # {"variable": "cea", "args": "", "name": "cea"},
     {"variable": "cea", "args": "axioms=approximate_negative", "name": "cea_approximate_negative"},
-    {"variable": "ff", "args": "", "name": "hff"},
-    {"variable": "ff", "args": "axioms=approximate_negative", "name": "hff_approximate_negative"},
-    {"variable": "cg", "args": "", "name": "cg"},
-    {"variable": "cg", "args": "axioms=approximate_negative", "name": "cg_approximate_negative"},
+    # {"variable": "ff", "args": "", "name": "hff"},
+    # {"variable": "ff", "args": "axioms=approximate_negative", "name": "hff_approximate_negative"},
+    # {"variable": "cg", "args": "", "name": "cg"},
+    # {"variable": "cg", "args": "axioms=approximate_negative", "name": "cg_approximate_negative"},
 ]
 
 # pddl = [("cat",17), ("elevator",22), ("task", 15), ("order", 5), ("order", 10), ("order", 15), ("trip", 5), ("trip", 10), ("trip", 15), ("tripv2",5), ("tripv2",10),("tripv2", 15), ("robot", 10), ("robot", 11), ("robot", 12)]
 
-pddl = [("catOG", 17)]
+pddl = [
+    # ("cat",18), ("cat",19), ("cat",20),
+    ("catOG",15), ("catOG",16), ("catOG",17),
+    # ("elevator",20), ("elevator",21),
+    # ("task",13), ("task",14)
+]
 
 if __name__ == "__main__":
     import os
