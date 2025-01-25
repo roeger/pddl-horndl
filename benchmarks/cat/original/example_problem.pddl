@@ -1,0 +1,11 @@
+(define (problem Cat_problem)
+	(:domain Cat)
+	(:objects hanzo )
+	(:init
+		(kitten hanzo)
+	)
+	(:goal (not (exists (?x)
+ 		 (kitten ?x)
+ 	 ))
+ 	)
+)
