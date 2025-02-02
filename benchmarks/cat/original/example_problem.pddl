@@ -1,8 +1,9 @@
-(define (problem Cat_problem)
-	(:domain Cat)
-	(:objects hanzo )
+(define (problem KitCat_problem)
+	(:domain KitCat)
+	(:objects hanzo genji )
 	(:init
 		(kitten hanzo)
+    (kitten genji)
 	)
 	(:goal (not (exists (?x)
  		 (kitten ?x)

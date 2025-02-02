@@ -1,4 +1,4 @@
-(define (domain Cat)
+(define (domain KitCat)
 
 (:predicates
 	(cat ?x)
