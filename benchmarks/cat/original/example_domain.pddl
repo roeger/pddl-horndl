@@ -7,7 +7,7 @@
  )
  (:action grow_up
   :parameters (?x)
-  :precondition (kitten ?x)
+  :precondition (animal ?x)
   :effect (when (kitten ?x)
     (and (not (kitten ?x))))
  )

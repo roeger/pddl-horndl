@@ -2,6 +2,8 @@
  (:domain KitCat)
  (:objects hanzo genji)
  (:init
+  (animal hanzo)
+  (animal genji)
   (kitten hanzo)
   (kitten genji)
  )
