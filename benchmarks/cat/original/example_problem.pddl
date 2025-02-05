@@ -1,6 +1,6 @@
 (define (problem KitCat_problem)
 	(:domain KitCat)
-	(:objects hanzo genji )
+	(:objects hanzo genji)
 	(:init
 		(kitten hanzo)
     (kitten genji)
