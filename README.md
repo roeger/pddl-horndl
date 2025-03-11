@@ -73,4 +73,4 @@ The following software is required for a complete run of the pipeline written in
   * updating as derived predicate
   * compatible_update instead of incompatible_update
 
-* Please keep in mind that while the branch contains the correct implementation for producing the .pddl files, not all files in `benchmarks/outputs/` were transformed correspondingly but only those used for chosen instances as mentioned in the thesis (e.g. Cats 15,16,17). `outputs/cats/domain_[15-17].pddl` 
+* Please keep in mind that while the branch contains the correct implementation for producing the .pddl files, not all files in `benchmarks/outputs/` were transformed correspondingly but only those instances chosen for the experiment as mentioned in the thesis (e.g. Cats 15,16,17). `outputs/cats/domain_[15-17].pddl` 
