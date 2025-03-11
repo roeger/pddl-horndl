@@ -44,7 +44,7 @@ The following software is required for a complete run of the pipeline written in
 * In `run.sh`, change the variables in line 43 (clipper), 44 (nmo), and 46 (fastdownward) to the above corresponding paths 
 
 #### Before running the script:
-* `run.sh` has uses 4 variables defined in lines 1-4 for a quicker run of the pipeline
+* `run.sh` uses 4 variables defined in lines 1-4 for automating the experiments
   * `keep_pddl` tells the script to write the corresponding .pddl files in `/benchmarks/outputs/` (value 1) or not (value 0)
   * `updates=(1)` tells the script to run the benchmarks with the coherence update semantics (for both use `updates=(0 1)`)
   * `tseitin=(1)` is similar to `updates=(1)`, which runs the Tseitin transformation after compiling the domain/problem files.
