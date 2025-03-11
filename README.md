@@ -37,7 +37,7 @@ The following software is required for a complete run of the pipeline written in
 ### Running the pipeline (`run.sh`):
 
 #### Configuring the corresponding paths in your system:
-* The script in `run.sh` requires path `clipper.sh` to the patched Clipper above, path to a command-line client `nmo` for Nemo, and path to `fast-downward.py` for Fastdownward
+* The script in `run.sh` requires the path to `clipper.sh` from the patched Clipper above, the path to a command-line client `nmo` for Nemo, and the path to `fast-downward.py` from the planner
   * For Clipper, the path is `/your_full_path_to_clipper/clipper/clipper-distribution/target/clipper/clipper.sh`
   * For nmo, the path is `your_full_path_to_nemo/nmo`
   * For Fastdownward, the path is `your_full_path_to_fastdownward/downward/fast-downward.py`
