@@ -23,7 +23,7 @@ The following software is required for a complete run of the pipeline written in
 
 #### Nemo:
 * At the time of writing, we used Nemo version 0.5.2-dev. Though this version is retracted, in principle, later versions of Nemo should also work
-* (From [Nemo](https://github.com/knowsys/nemo]) repo): The fastest way to run Nemo is to use system-specific binaries of our command-line client. Archives with pre-compiled binaries for various platforms are available from the Nemo releases page
+* (From [Nemo](https://github.com/knowsys/nemo) repo): The fastest way to run Nemo is to use system-specific binaries of our command-line client. Archives with pre-compiled binaries for various platforms are available from the Nemo releases page
   - Download a precompiled binary from releases: https://github.com/knowsys/nemo/releases
   - Extract `tar -xvf [your-chosen-nemo-release].tar`
 * There will be a binary `nmo` file in the extracted folder, whose path we will use in later in `run.sh` 
