@@ -5,7 +5,7 @@ The following software is required for a complete run of the pipeline written in
 - Nemo
 - Fastdownward
 
-### Installation Intructions:
+## Installation Intructions:
 #### Clipper:
 * Clone the repo:
 ```sh
@@ -21,7 +21,6 @@ The following software is required for a complete run of the pipeline written in
   $ ./build.sh
 ```
 
-
 #### Nemo:
 * At the time of writing, we used Nemo version 0.5.2-dev. Though this version is retracted, in principle, later versions of Nemo should also work
 * (From [Nemo](https://github.com/knowsys/nemo]) repo): The fastest way to run Nemo is to use system-specific binaries of our command-line client. Archives with pre-compiled binaries for various platforms are available from the Nemo releases page
@@ -29,12 +28,11 @@ The following software is required for a complete run of the pipeline written in
   - Extract `tar -xvf [your-chosen-nemo-release].tar`
 * There will be a binary `nmo` file in the extracted folder, whose path we will use in later in `run.sh` 
 
-
 #### Fastdownward:
 * Detailed installation on webpage: https://www.fast-downward.org/latest/documentation/quick-start/
 
 
-### Running the pipeline (`run.sh`):
+## Running the pipeline (`run.sh`):
 
 #### Configuring the corresponding paths in your system:
 * The script in `run.sh` requires the path to `clipper.sh` from the patched Clipper above, the path to a command-line client `nmo` for Nemo, and the path to `fast-downward.py` from the planner
@@ -55,7 +53,7 @@ The following software is required for a complete run of the pipeline written in
   * If Tseitin transformation is turned on, then the file (domain/problem) names will be `compiled_*.pddl`
   * Otherwise, it will only be `domain_[benchmark-instance].pddl` or `problem_[benchmark-instance].pddl`
 
-### Mapping from Benchmark names in Thesis to folder names:
+## Mapping from Benchmark names in Thesis to folder names:
 
 * Cats => cat
 * Elevator => elevator
@@ -64,3 +62,15 @@ The following software is required for a complete run of the pipeline written in
 * VTA => trip
 * VTA-Roles => tripv2
 * TaskAssign => task
+
+## Impementation Variants:
+
+* Branch update_v3 (Variant 1 in thesis)
+  * updating as action instead of derived predicate
+  * compatible_update instead of incompatible_update
+
+* Branch update_v25 (Variant 2 in thesis)
+  * updating as derived predicate
+  * compatible_update instead of incompatible_update
+
+* Please keep in mind that while the branch contains the correct implementation for producing the .pddl files, not all files in `benchmarks/outputs/` were transformed corresponding but only those used for chosen instances as mentioned in the thesis (e.g. Cats 15,16,17). `outputs/cats/domain_[15-17].pddl` 
