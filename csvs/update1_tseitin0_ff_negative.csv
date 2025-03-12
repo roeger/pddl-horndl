@@ -1,5 +1,0 @@
-benchmark name,t closure,domain extension,collecting queries,rewriting,update rules const,gen derived preds,finalize,total complation, solution, size(KB)
-catOG 6,0.057403,0.000104,0.000212,0.544701,0.000273,0.002537,0.000543,0.548653,No solution: 0.08s,10076
-catOG 7,0.049771,0.000093,0.000201,0.342062,0.000228,0.002627,0.000538,0.345999,No solution: 0.09s,10072
-catOG 8,0.050071,0.000107,0.000246,0.344661,0.000261,0.002573,0.000551,0.348683,No solution: 0.09s,10072
-catOG 9,0.050914,0.000107,0.000212,0.338743,0.000265,0.002671,0.000532,0.342819,
