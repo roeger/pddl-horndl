@@ -52,6 +52,10 @@ The following software is required for a complete run of the pipeline written in
 * By default (in `run.sh`), they are in `/benchmarks/outputs/[corresponding-folder-name-of-benchmark]/`
   * If Tseitin transformation is turned on, then the file (domain/problem) names will be `compiled_*.pddl`
   * Otherwise, it will only be `domain_[benchmark-instance].pddl` or `problem_[benchmark-instance].pddl`
+ 
+## The Benchmark folder:
+* We keep the original .pddl files (domain + problem) from the work of Borgwardt et al. intact in their corresponding subfolders e.g. `benchmarks/robot`
+* All of the outputs of our pipeline are stationed in `benchmarks/outputs/` 
 
 ## Mapping from Benchmark names in Thesis to folder names:
 
