@@ -69,7 +69,7 @@ DRIVER_OPTIONS = [
 ]
 # Pairs of revision identifier and optional revision nick.
 REV_NICKS = [
-    ("a6b98adb939b9fb91eb8f0b5e74eb68a323d65ae", "HEAD-24-4-2025"), # 24.06.1
+    ("a6b98adb939b9fb91eb8f0b5e74eb68a323d65ae", ""), # 24-4-2025
 ]
 ATTRIBUTES = [
     "error",
@@ -113,10 +113,11 @@ for rev, rev_nick in REV_NICKS:
                 for folder in benchmark_folders:
                     if not prefix in task[folder]:
                         continue
-                    #algo_name = f"{config_nick}-{variant}-{folder}"
-                    algo_name = f"{config_nick}_{folder}"
+                    algo_name = f"{config_nick}-{variant}-{folder}"
+                    #algo_name = f"{config_nick}_{folder}"
                     if rev_nick:
-                        algo_name = f"{rev_nick}-{algo_name}" 
+                        #algo_name = f"{rev_nick}-{algo_name}" 
+                        algo_name = f"{rev_nick}-{config_nick}-{variant}-{folder}"
                     algo = FastDownwardAlgorithm(
                         algo_name,
                         cached_rev,
