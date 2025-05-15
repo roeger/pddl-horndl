@@ -65,7 +65,7 @@ DRIVER_OPTIONS = [
     "--overall-time-limit",
     "30m",
     "--overall-memory-limit",
-    "4G",
+    "3G",
 ]
 # Pairs of revision identifier and optional revision nick.
 REV_NICKS = [
