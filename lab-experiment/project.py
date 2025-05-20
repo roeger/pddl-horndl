@@ -233,7 +233,8 @@ for group_name in DOMAIN_GROUPS:
 
 def group_domains(run):
     old_domain = run["domain"]
-    run["domain"] = DOMAIN_RENAMINGS[old_domain]
+    run["domain"] = old_domain
+#    run["domain"] = DOMAIN_RENAMINGS[old_domain]
     run["problem"] = old_domain + "-" + run["problem"]
     run["id"][2] = run["problem"]
     return run
@@ -372,7 +373,8 @@ def add_scatter_plot_reports(exp, algorithm_pairs, attributes, *, filter=None):
             exp.add_report(
                 ScatterPlotReport(
                     relative=RELATIVE,
-                    get_category=None if TEX else lambda run1, run2: run1["domain"],
+                    #get_category=None if TEX else lambda run1, run2: run1["domain"],
+                    get_category=lambda run1, run2: run1["domain"],
                     attributes=[attribute],
                     filter_algorithm=[algo1, algo2],
                     filter=[add_evaluations_per_time, group_domains]

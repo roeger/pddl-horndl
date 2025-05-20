@@ -94,7 +94,7 @@ ATTRIBUTES = [
     "translator_facts",
     "translator_time_instantiating",
     "translator_time_processing_axioms",
-    "translator_time_simplifying_axioms",
+    "translator_time_simplifying_axioms"
 ]
 
 variants = { "wtseitin" : "_tseitin", "wotseitin" : "_no_tseitin"}
@@ -140,6 +140,106 @@ exp.add_fetcher(name="fetch")
 project.add_absolute_report(
     exp,
     attributes=ATTRIBUTES,
+)
+
+def only_var0_no_tseitin(run):
+    return run["variant"] in ["_no_tseitin"] and run["folder"] == "var0"
+
+def only_var1_no_tseitin(run):
+    return run["variant"] in ["_no_tseitin"] and run["folder"] == "var1"
+
+def only_var2_no_tseitin(run):
+    return run["variant"] in ["_no_tseitin"] and run["folder"] == "var2"
+
+def only_var3_no_tseitin(run):
+    return run["variant"] in ["_no_tseitin"] and run["folder"] == "var3"
+
+def only_var0_with_tseitin(run):
+    return run["variant"] in ["_tseitin"] and run["folder"] == "var0"
+
+def only_var1_with_tseitin(run):
+    return run["variant"] in ["_tseitin"] and run["folder"] == "var1"
+
+def only_var2_with_tseitin(run):
+    return run["variant"] in ["_tseitin"] and run["folder"] == "var2"
+
+def only_var3_with_tseitin(run):
+    return run["variant"] in ["_tseitin"] and run["folder"] == "var3"
+
+project.add_absolute_report(
+    exp,
+    name="coverage-var0-notseitin",
+    attributes=["coverage"],
+    filter=only_var0_no_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var1-notseitin",
+    attributes=["coverage"],
+    filter=only_var1_no_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var2-notseitin",
+    attributes=["coverage"],
+    filter=only_var2_no_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var3-notseitin",
+    attributes=["coverage"],
+    filter=only_var3_no_tseitin,
+    format="tex"
+)
+
+project.add_absolute_report(
+    exp,
+    name="coverage-var0-withtseitin",
+    attributes=["coverage"],
+    filter=only_var0_with_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var1-withtseitin",
+    attributes=["coverage"],
+    filter=only_var1_with_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var2-withtseitin",
+    attributes=["coverage"],
+    filter=only_var2_with_tseitin,
+    format="tex"
+)
+project.add_absolute_report(
+    exp,
+    name="coverage-var3-withtseitin",
+    attributes=["coverage"],
+    filter=only_var3_with_tseitin,
+    format="tex"
+)
+project.add_scatter_plot_reports(
+    exp,
+    algorithm_pairs=[["astar-blind-wotseitin-var0", "ff-approx-wotseitin-var0"]],
+    attributes=["cost"],
+    filter=only_var0_no_tseitin
+)
+project.add_scatter_plot_reports(
+    exp,
+    algorithm_pairs=[["greedy-blind-wotseitin-var0", "ff-approx-wotseitin-var0"]],
+    attributes=["expansions", "total_time"],
+    filter=only_var0_no_tseitin
+)
+project.add_scatter_plot_reports(
+    exp,
+    algorithm_pairs=[["greedy-blind-wotseitin-var0", "ff-approx-wotseitin-var0"]],
+    attributes=["evaluations_per_time"],
+    filter=only_var0_no_tseitin
 )
 
 archive.add_archive_step(exp, ARCHIVE_PATH)
